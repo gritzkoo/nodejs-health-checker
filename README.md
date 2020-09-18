@@ -1,11 +1,11 @@
-[![Build Status](https://img.shields.io/github/license/gritzkoo/nodejs-health-checker)](https://img.shields.io/github/license/gritzkoo/nodejs-health-checker)
-[![Build Status](https://img.shields.io/github/issues/gritzkoo/nodejs-health-checker)](https://img.shields.io/github/issues/gritzkoo/nodejs-health-checker)
-[![Build Status](https://img.shields.io/github/v/tag/gritzkoo/nodejs-health-checker)](https://img.shields.io/github/v/tag/gritzkoo/nodejs-health-checker)
-[![Build Status](https://img.shields.io/github/languages/count/gritzkoo/nodejs-health-checker)](https://img.shields.io/github/languages/count/gritzkoo/nodejs-health-checker)
-[![Build Status](https://img.shields.io/github/repo-size/gritzkoo/nodejs-health-checker)](https://img.shields.io/github/repo-size/gritzkoo/nodejs-health-checker)
-[![Build Status](https://img.shields.io/github/downloads/gritzkoo/nodejs-health-checker/total)](https://img.shields.io/github/downloads/gritzkoo/nodejs-health-checker/total)
-[![Build Status](https://img.shields.io/npm/dy/nodejs-health-checker)](https://img.shields.io/npm/dy/nodejs-health-checker)
-[![Build Status](https://img.shields.io/github/package-json/keywords/gritzkoo/nodejs-health-checker)](https://img.shields.io/github/package-json/keywords/gritzkoo/nodejs-health-checker)
+[![License Status](https://img.shields.io/github/license/gritzkoo/nodejs-health-checker)](https://img.shields.io/github/license/gritzkoo/nodejs-health-checker)
+[![Ussues Status](https://img.shields.io/github/issues/gritzkoo/nodejs-health-checker)](https://img.shields.io/github/issues/gritzkoo/nodejs-health-checker)
+[![Tag Status](https://img.shields.io/github/v/tag/gritzkoo/nodejs-health-checker)](https://img.shields.io/github/v/tag/gritzkoo/nodejs-health-checker)
+[![Languages Status](https://img.shields.io/github/languages/count/gritzkoo/nodejs-health-checker)](https://img.shields.io/github/languages/count/gritzkoo/nodejs-health-checker)
+[![Repo Size Status](https://img.shields.io/github/repo-size/gritzkoo/nodejs-health-checker)](https://img.shields.io/github/repo-size/gritzkoo/nodejs-health-checker)
+[![GIT Downloads Status](https://img.shields.io/github/downloads/gritzkoo/nodejs-health-checker/total)](https://img.shields.io/github/downloads/gritzkoo/nodejs-health-checker/total)
+[![NPM Downloads Status](https://img.shields.io/npm/dy/nodejs-health-checker)](https://img.shields.io/npm/dy/nodejs-health-checker)
+[![Keywords](https://img.shields.io/github/package-json/keywords/gritzkoo/nodejs-health-checker)](https://img.shields.io/github/package-json/keywords/gritzkoo/nodejs-health-checker)
 
 # nodejs-health-checker
 
