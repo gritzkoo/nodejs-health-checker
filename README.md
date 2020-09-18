@@ -5,7 +5,6 @@
 [![Repo Size Status](https://img.shields.io/github/repo-size/gritzkoo/nodejs-health-checker)](https://img.shields.io/github/repo-size/gritzkoo/nodejs-health-checker)
 [![GIT Downloads Status](https://img.shields.io/github/downloads/gritzkoo/nodejs-health-checker/total)](https://img.shields.io/github/downloads/gritzkoo/nodejs-health-checker/total)
 [![NPM Downloads Status](https://img.shields.io/npm/dy/nodejs-health-checker)](https://img.shields.io/npm/dy/nodejs-health-checker)
-[![Keywords](https://img.shields.io/github/package-json/keywords/gritzkoo/nodejs-health-checker)](https://img.shields.io/github/package-json/keywords/gritzkoo/nodejs-health-checker)
 
 # nodejs-health-checker
 
