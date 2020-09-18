@@ -1,0 +1,51 @@
+version: "3.7"
+
+services:
+  app:
+    build:
+      context: .
+    command: npm run dev
+    volumes:
+      - .:/app
+    ports:
+      - 8888:8888
+    depends_on:
+      - redis
+      - memcache
+
+  redis:
+    image: redis
+    ports:
+      - 6379:6379
+
+  memcache:
+    image: memcached:1.4.21
+    ports:
+      - 11211:11211
+
+      #the services below is a short hand to use npm in docker context
+  test:
+    build:
+      context: .
+    command: npm run test
+    volumes:
+      - .:/app
+    depends_on:
+      - redis
+      - memcache
+  lint:
+    build:
+      context: .
+    command: npm run lint
+    volumes:
+      - .:/app
+  format:
+    build:
+      context: .
+    command: npm run format
+    volumes:
+      - .:/app
+
+networks:
+  default:
+    name: gritzkoo-nodejs-health-checker
