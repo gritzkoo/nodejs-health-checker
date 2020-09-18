@@ -1,10 +1,14 @@
+[![License Status](https://img.shields.io/github/license/gritzkoo/nodejs-health-checker)](https://img.shields.io/github/license/gritzkoo/nodejs-health-checker)
+[![Issues Status](https://img.shields.io/github/issues/gritzkoo/nodejs-health-checker)](https://img.shields.io/github/issues/gritzkoo/nodejs-health-checker)
+[![Tag Status](https://img.shields.io/github/v/tag/gritzkoo/nodejs-health-checker)](https://img.shields.io/github/v/tag/gritzkoo/nodejs-health-checker)
+[![Languages Status](https://img.shields.io/github/languages/count/gritzkoo/nodejs-health-checker)](https://img.shields.io/github/languages/count/gritzkoo/nodejs-health-checker)
+[![Repo Size Status](https://img.shields.io/github/repo-size/gritzkoo/nodejs-health-checker)](https://img.shields.io/github/repo-size/gritzkoo/nodejs-health-checker)
+[![GIT Downloads Status](https://img.shields.io/github/downloads/gritzkoo/nodejs-health-checker/total)](https://img.shields.io/github/downloads/gritzkoo/nodejs-health-checker/total)
+[![NPM Downloads Status](https://img.shields.io/npm/dy/nodejs-health-checker)](https://img.shields.io/npm/dy/nodejs-health-checker)
+
 # nodejs-health-checker
 
 Simple Node package to simplify applications based in Nodejs, to trace the healthy of the pods
-
-<img src="https://img.shields.io/github/license/gritzkoo/nodejs-health-checker" />
-<img src="https://img.shields.io/github/issues/gritzkoo/nodejs-health-checker" />
-<img src="https://img.shields.io/github/v/tag/gritzkoo/nodejs-health-checker" />
 
 ## How to install
 
