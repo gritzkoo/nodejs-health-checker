@@ -21,7 +21,6 @@
     "url": "https://github.com/gritzkoo/nodejs-health-checker/issues"
   },
   "homepage": "https://github.com/gritzkoo/nodejs-health-checker#readme",
-  "main": "src/index.ts",
   "scripts": {
     "dev": "nodemon --watch \"src/\" --exec \"ts-node src/index.ts\" -e ts",
     "test": "jest --detectOpenHandles",
@@ -52,9 +51,6 @@
     "memcached": "^2.2.2",
     "node-fetch": "^2.6.1",
     "redis": "^3.0.2"
-  },
-  "publishConfig": {
-    "registry": "https://npm.pkg.github.com/"
   },
   "files": [
     "dist/**/*"
