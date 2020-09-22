@@ -59,6 +59,12 @@ This is a Node package that allows you to track the health of your application, 
 npm i nodejs-health-checker
 ```
 
+## Available integrations
+
+- [x] Redis
+- [x] Memcached
+- [x] Web integration (https)
+
 ## How to use
 
 Example using Nodejs + Express
