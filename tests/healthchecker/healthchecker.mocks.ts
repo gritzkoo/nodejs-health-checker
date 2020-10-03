@@ -15,7 +15,7 @@ export const cenarios: HealthCheckDetailedTestCenario = {
     config: {
       name: "jest-test-redis",
       type: HealthTypes.Redis,
-      host: "redis",
+      host: "localhost",
     },
   },
   redisFalsy: {
@@ -23,7 +23,7 @@ export const cenarios: HealthCheckDetailedTestCenario = {
     config: {
       name: "jest-test-redis",
       type: HealthTypes.Redis,
-      host: "redis",
+      host: "localhost",
       port: 100,
     },
   },
@@ -32,7 +32,7 @@ export const cenarios: HealthCheckDetailedTestCenario = {
     config: {
       name: "jest-test-memcached",
       type: HealthTypes.Memcached,
-      host: "memcache",
+      host: "localhost",
       port: 11211,
       timeout: 100,
     },
@@ -42,7 +42,7 @@ export const cenarios: HealthCheckDetailedTestCenario = {
     config: {
       name: "jest-test-memcached",
       type: HealthTypes.Memcached,
-      host: "memcache",
+      host: "localhost",
       port: 100,
       timeout: 1,
     },
