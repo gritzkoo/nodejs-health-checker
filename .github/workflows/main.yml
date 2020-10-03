@@ -1,4 +1,4 @@
-name: Run unity tests
+name: unit test
 
 on: [push]
 
@@ -27,7 +27,6 @@ jobs:
     - name: Memcached Service
       uses: niden/actions-memcached@v7
 
-    - run: docker ps -a
     - run: npm install
     - run: npm test
       env:
