@@ -40,10 +40,12 @@ jobs:
         run: npm test:coverage
         env:
           CI: true
+
+      - name: upload coverage artifact v${{ matrix.node-version }}
         uses: actions/upload-artifact@v2
         with:
           name: coveragev-${{ matrix.node-version }}
-          path: coverage/lcov.info
+          path: coverage/**/*
 
   coverage:
     needs: test
@@ -62,7 +64,6 @@ jobs:
   build:
     name: Build application
     needs:
-      - test
       - coverage
     runs-on: ubuntu-latest
     steps:
@@ -84,6 +85,8 @@ jobs:
 
       - name: Run npm build
         run: npm build
+
+      - name: Generate dist artifact v${{ matrix.node-version }}
         uses: actions/upload-artifact@v2
         with:
           name: dist-folder
@@ -92,7 +95,6 @@ jobs:
   publish:
     name: NPM publish package
     needs:
-      - test
       - build
     runs-on: ubuntu-latest
     if: github.event_name == 'push' && github.ref == 'refs/heads/master'
