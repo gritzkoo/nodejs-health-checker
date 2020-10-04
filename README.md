@@ -1,13 +1,18 @@
 # nodejs-health-checker
 
-![unit test](https://github.com/danilolutz/nodejs-health-checker/workflows/unit%20test/badge.svg)
+<div align="center">
+
+![npm](https://img.shields.io/npm/dt/nodejs-health-checker?style=for-the-badge)
+
+![test](https://github.com/gritzkoo/nodejs-health-checker/workflows/test/badge.svg?branch=master)
+![GitHub Workflow Status (event)](https://img.shields.io/github/workflow/status/gritzkoo/nodejs-health-checker/test)
+[![Coverage Status](https://coveralls.io/repos/github/gritzkoo/nodejs-health-checker/badge.svg?branch=master)](https://coveralls.io/github/gritzkoo/nodejs-health-checker?branch=master)
 [![License Status](https://img.shields.io/github/license/gritzkoo/nodejs-health-checker)](https://img.shields.io/github/license/gritzkoo/nodejs-health-checker)
 [![Issues Status](https://img.shields.io/github/issues/gritzkoo/nodejs-health-checker)](https://img.shields.io/github/issues/gritzkoo/nodejs-health-checker)
 [![Tag Status](https://img.shields.io/github/v/tag/gritzkoo/nodejs-health-checker)](https://img.shields.io/github/v/tag/gritzkoo/nodejs-health-checker)
 [![Languages Status](https://img.shields.io/github/languages/count/gritzkoo/nodejs-health-checker)](https://img.shields.io/github/languages/count/gritzkoo/nodejs-health-checker)
 [![Repo Size Status](https://img.shields.io/github/repo-size/gritzkoo/nodejs-health-checker)](https://img.shields.io/github/repo-size/gritzkoo/nodejs-health-checker)
-[![GIT Downloads Status](https://img.shields.io/github/downloads/gritzkoo/nodejs-health-checker/total)](https://img.shields.io/github/downloads/gritzkoo/nodejs-health-checker/total)
-[![NPM Downloads Status](https://img.shields.io/npm/dy/nodejs-health-checker)](https://img.shields.io/npm/dy/nodejs-health-checker)
+</div>
 
 This is a Node package that allows you to track the health of your application, providing two ways of checking:
 
