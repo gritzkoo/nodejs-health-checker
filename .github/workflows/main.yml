@@ -55,6 +55,7 @@ jobs:
       - uses: actions/download-artifact@v2
         with:
           name: coveragev-12.x
+          path: coverage
 
       - name: list data from directory
         run: ls -R
@@ -106,6 +107,7 @@ jobs:
       - uses: actions/download-artifact@v2
         with:
           name: dist-folder
+          path: dist
       # - uses: actions/setup-node@v1
       #   with:
       #     node-version: "12"
