@@ -37,12 +37,33 @@ jobs:
         run: npm install
 
       - name: Run npm test in version ${{ matrix.node-version }}
-        run: npm test
+        run: npm test:coverage
         env:
           CI: true
+        uses: actions/upload-artifact@v2
+        with:
+          name: coveragev-${{ matrix.node-version }}
+          path: coverage/lcov.info
 
   coverage:
     needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Using coverage artifact fron nodejs v12
+        uses: actions/download-artifact@v2
+        with:
+          name: coveragev-12
+
+      - name: Generate coverage in coverall
+        uses: coverallsapp/github-action@master
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+  build:
+    name: Build application
+    needs:
+      - test
+      - coverage
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -57,11 +78,46 @@ jobs:
           path: node_modules
           key: 12.x-${{ runner.OS }}-build-${{ hashFiles('package.json') }}
 
-      - name: Installing dependencies
+      - name: Run npm build
         if: steps.cache-modules.outputs.cache-hit != 'true'
         run: npm install
 
-      - name: Generate coverage in coverall
-        uses: coverallsapp/github-action@master
+      - name: Run npm build
+        run: npm build
+        uses: actions/upload-artifact@v2
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          name: dist-folder
+          path: dist/**/*
+
+  publish:
+    name: NPM publish package
+    needs:
+      - test
+      - build
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/download-artifact@v2
+        with:
+          name: dist-folder
+      # - uses: actions/setup-node@v1
+      #   with:
+      #     node-version: "12"
+
+      # - name: Cache node_modules
+      #   id: cache-modules
+      #   uses: actions/cache@v1
+      #   with:
+      #     path: node_modules
+      #     key: 12.x-${{ runner.OS }}-build-${{ hashFiles('package.json') }}
+
+      # - name: Build
+      #   if: steps.cache-modules.outputs.cache-hit != 'true'
+      #   run: npm install
+
+      - name: Publish
+        uses: mikeal/merge-release@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
