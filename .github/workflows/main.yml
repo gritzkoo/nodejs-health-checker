@@ -5,8 +5,8 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [12.x]
-        redis-version: [6]
+        node-version: [10.x, 12.x, 14.x]
+        redis-version: [4, 5, 6]
 
     steps:
       - name: Git checkout
