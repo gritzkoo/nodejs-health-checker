@@ -5,8 +5,8 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [10.x, 12.x, 14.x]
-        redis-version: [4, 5, 6]
+        node-version: [12.x]
+        redis-version: [6]
 
     steps:
       - name: Git checkout
@@ -51,10 +51,13 @@ jobs:
     needs: test
     runs-on: ubuntu-latest
     steps:
-      - name: Using coverage artifact fron nodejs v12
-        uses: actions/download-artifact@v2
+      - uses: actions/checkout@v2
+      - uses: actions/download-artifact@v2
         with:
           name: coveragev-12.x
+
+      - name: list data from directory
+        run: ls -R
 
       - name: Generate coverage in coverall
         uses: coverallsapp/github-action@master
