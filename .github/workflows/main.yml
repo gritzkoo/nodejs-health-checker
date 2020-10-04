@@ -37,7 +37,7 @@ jobs:
         run: npm install
 
       - name: Run npm test in version ${{ matrix.node-version }}
-        run: npm test:coverage
+        run: npm run test:coverage
         env:
           CI: true
 
