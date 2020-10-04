@@ -24,6 +24,7 @@
   "scripts": {
     "dev": "nodemon --watch \"src/\" --exec \"ts-node src/index.ts\" -e ts",
     "test": "jest --detectOpenHandles",
+    "test:coverage": "jest --detectOpenHandles --collect-coverage",
     "format": "prettier --config .prettierrc.json --ignore-unknown --write \"src/**/*.ts\" \"tests/**/*.ts\"",
     "lint": "tslint -p tsconfig.json",
     "build": "tsc"
