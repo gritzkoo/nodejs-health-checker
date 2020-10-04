@@ -88,13 +88,14 @@ jobs:
         run: npm install
 
       - name: Run npm build
-        run: npm build
+        run: npm run build
 
       - name: Generate dist artifact v${{ matrix.node-version }}
         uses: actions/upload-artifact@v2
         with:
           name: dist-folder
           path: dist/**/*
+          if-no-files-found: error
 
   publish:
     name: NPM publish package
