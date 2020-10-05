@@ -36,7 +36,7 @@ jobs:
         if: steps.cache-modules.outputs.cache-hit != 'true'
         run: npm install
 
-      - name: Run npm test in version ${{ matrix.node-version }}
+      - name: Run test in version ${{ matrix.node-version }}
         run: npm run test:coverage
         env:
           CI: true
