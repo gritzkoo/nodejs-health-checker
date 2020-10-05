@@ -22,7 +22,7 @@ jobs:
         with:
           redis-version: ${{ matrix.redis-version }}
 
-      - name: Memcached Service
+      - name: Sets up a Memcached server
         uses: niden/actions-memcached@v7
 
       - name: Cache node_modules
