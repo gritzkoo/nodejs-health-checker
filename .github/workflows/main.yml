@@ -87,7 +87,7 @@ jobs:
         if: steps.cache-modules.outputs.cache-hit != 'true'
         run: npm install
 
-      - name: Run npm build
+      - name: Build application
         run: npm run build
 
       - name: Generate dist artifact v${{ matrix.node-version }}
