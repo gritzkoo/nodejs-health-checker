@@ -83,7 +83,7 @@ jobs:
           path: node_modules
           key: 12.x-${{ runner.OS }}-build-${{ hashFiles('package.json') }}
 
-      - name: Run npm install
+      - name: Install NPM
         if: steps.cache-modules.outputs.cache-hit != 'true'
         run: npm install
 
