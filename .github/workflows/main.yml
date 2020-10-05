@@ -98,7 +98,7 @@ jobs:
           if-no-files-found: error
 
   publish:
-    name: NPM publish package
+    name: NPM package publish 
     needs:
       - build
     runs-on: ubuntu-latest
