@@ -64,7 +64,7 @@ jobs:
   build:
     name: Build application
     needs:
-      - coverage
+      - test
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
