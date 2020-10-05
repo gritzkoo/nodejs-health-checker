@@ -32,7 +32,7 @@ jobs:
           path: node_modules
           key: ${{ matrix.node-version }}-${{ runner.OS }}-build-${{ hashFiles('package.json') }}
 
-      - name: Run npm install in version ${{ matrix.node-version }}
+      - name: Install npm in version ${{ matrix.node-version }}
         if: steps.cache-modules.outputs.cache-hit != 'true'
         run: npm install
 
