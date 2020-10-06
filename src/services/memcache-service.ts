@@ -11,8 +11,6 @@ export function checkMemcachedClient(config: IntegrationConfig): Promise<HTTPChe
   return new Promise((resolve, _) => {
     const client = new Memcached(config.host, {
       timeout: config.timeout,
-      retries: 0,
-      idle: 100,
     });
     client.stats((error, status) => {
       client.end();
