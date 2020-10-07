@@ -60,9 +60,15 @@ export async function HealthcheckerDetailedCheck(config: ApplicationConfig): Pro
  */
 async function redisCheck(config: IntegrationConfig): Promise<Integration> {
   const start = new Date().getTime();
+
   const result = await checkRedisClient(config);
+
+  if (result.status && config.onSuccess) config.onSuccess()
+  if (!result.status && config.onFail) config.onFail()
+
   config.port = config.port || Defaults.RedisPort;
   config.db = config.db || Defaults.RedisDB;
+
   return {
     name: config.name || "",
     kind: HealthIntegration.RedisIntegration,
@@ -79,8 +85,13 @@ async function redisCheck(config: IntegrationConfig): Promise<Integration> {
 async function memcacheCheck(config: IntegrationConfig): Promise<Integration> {
   return new Promise((resolve, _) => {
     const start = new Date().getTime();
+
     config.timeout = config.timeout || Defaults.MemcachedTimeout;
+
     checkMemcachedClient(config).then((check) => {
+      if (check.status && config.onSuccess) config.onSuccess()
+      if (!check.status && config.onFail) config.onFail()
+
       resolve({
         name: config.name || "",
         kind: HealthIntegration.MemcachedIntegration,
@@ -98,8 +109,14 @@ async function memcacheCheck(config: IntegrationConfig): Promise<Integration> {
  */
 async function webCheck(config: IntegrationConfig): Promise<Integration> {
   const start = new Date().getTime();
+
   config.timeout = config.timeout || Defaults.WebTimeout;
+
   const result = await checkWebIntegration(config);
+
+  if (result.status && config.onSuccess) config.onSuccess()
+  if (!result.status && config.onFail) config.onFail()
+
   return {
     name: config.name || "",
     kind: HealthIntegration.WebServiceIntegration,

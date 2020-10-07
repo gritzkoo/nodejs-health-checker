@@ -34,6 +34,9 @@ export interface ApplicationConfig {
   version?: string;
   integrations: IntegrationConfig[];
 }
+
+export type genericCallbackFunction = () => void;
+
 // IntegrationConfig used to inform each integration config
 export interface IntegrationConfig {
   type: HealthTypes;
@@ -44,6 +47,8 @@ export interface IntegrationConfig {
   db?: number;
   timeout?: number;
   auth?: Auth;
+  onFail?: genericCallbackFunction;
+  onSuccess?: genericCallbackFunction;
 }
 // HTTPHeader used to setup webservices integrations
 export interface HTTPHeader {

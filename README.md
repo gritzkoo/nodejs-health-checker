@@ -106,17 +106,23 @@ server.get("/health-check/readiness", async (_, res) => {
           type: HealthTypes.Redis,
           name: "redis integration",
           host: "redis",
+          onSuccess: () => console.log('success') // you can call your log here
+          onFail: () => console.error('error') // you can call your log here
         },
         {
           type: HealthTypes.Memcached,
           name: "My memcache integration",
           host: "memcache:11211",
+          onSuccess: () => console.log('success') // you can call your log here
+          onFail: () => console.error('error') // you can call your log here
         },
         {
           type: HealthTypes.Web,
           name: "my web api integration",
           host: "https://github.com/status",
           headers: [{ key: "Accept", value: "application/json" }],
+          onSuccess: () => console.log('success') // you can call your log here
+          onFail: () => console.error('error') // you can call your log here
         },
       ],
     })
