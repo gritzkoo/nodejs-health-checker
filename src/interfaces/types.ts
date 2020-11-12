@@ -49,7 +49,7 @@ export interface IntegrationConfig {
 
 // Aws is the interface to config aws services (dynamo)
 export interface Aws {
-  region: string;
+  region?: string;
   access_key_id?: string;
   secret_access_key?: string;
 }
@@ -77,7 +77,7 @@ export enum Defaults {
   RedisTimeout = 2 * 1000,
   RedisDB = 0,
   RedisPort = 6379,
-  MemcachedTimeout = 1 * 1000,
+  MemcachedTimeout = 1 * 100,
   MemcachePort = 11211,
   WebTimeout = 10 * 1000,
 }

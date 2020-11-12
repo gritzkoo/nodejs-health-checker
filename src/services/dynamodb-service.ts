@@ -6,11 +6,12 @@ export async function checkDynamodbClient(config: IntegrationConfig): Promise<HT
     // init dynamo client
     const client = new DynamoDBClient({
       endpoint: config.host,
-      region: config.Aws?.region || "",
+      region: config.Aws?.region || "us-east-1",
       credentials: {
         accessKeyId: config.Aws?.access_key_id || "",
         secretAccessKey: config.Aws?.secret_access_key || "",
       },
+      maxAttempts: 1,
     });
     // check if package table exists
     try {

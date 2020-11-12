@@ -68,7 +68,7 @@ async function redisCheck(config: IntegrationConfig): Promise<Integration> {
   config.port = config.port || Defaults.RedisPort;
   config.db = config.db || Defaults.RedisDB;
   return {
-    name: config.name || "",
+    name: config.name,
     kind: HealthIntegration.RedisIntegration,
     status: result.status,
     response_time: getDeltaTime(start),
@@ -86,7 +86,7 @@ async function memcacheCheck(config: IntegrationConfig): Promise<Integration> {
     config.timeout = config.timeout || Defaults.MemcachedTimeout;
     checkMemcachedClient(config).then((check) => {
       resolve({
-        name: config.name || "",
+        name: config.name,
         kind: HealthIntegration.MemcachedIntegration,
         status: check.status,
         response_time: getDeltaTime(start),
@@ -105,7 +105,7 @@ async function webCheck(config: IntegrationConfig): Promise<Integration> {
   config.timeout = config.timeout || Defaults.WebTimeout;
   const result = await checkWebIntegration(config);
   return {
-    name: config.name || "",
+    name: config.name,
     kind: HealthIntegration.WebServiceIntegration,
     status: result.status,
     response_time: getDeltaTime(start),
@@ -119,7 +119,7 @@ async function dynamoCheck(config: IntegrationConfig): Promise<Integration> {
   config.timeout = config.timeout || Defaults.WebTimeout;
   const result = await checkDynamodbClient(config);
   return {
-    name: config.name || "",
+    name: config.name,
     kind: HealthIntegration.DynamoDbIntegration,
     status: result.status,
     response_time: getDeltaTime(start),

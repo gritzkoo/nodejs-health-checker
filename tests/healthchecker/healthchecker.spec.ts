@@ -12,9 +12,11 @@ describe("Testing the main funcionalyties", () => {
     ["should redis be tested and return: truthy", cenarios.redisTruthy],
     ["should redis be tested and return: falsy", cenarios.redisFalsy],
     ["should memcached be tested and return: truthy", cenarios.memcachedTruthy],
+    ["should memcached be tested and use default timeout and return: truthy", cenarios.memcachedDefaultTimeout],
     // ["should memcached be tested and return: falsy", cenarios.memcachedFalsy], // lib memcache can't handle falsy in test mode
     ["should web be tested and return: truthy", cenarios.webIntegrationTruthy],
     ["should web be tested and return: falsy", cenarios.webIntegrationFalsy],
+    ["should web be tested and get a timeout and return: falsy", cenarios.webIntegrationTimeout],
     ["should Aws DynamoBD be tested and return: truthy", cenarios.dynamoIntegrationTruthy],
     ["should Aws DynamoBD be tested and return: falsy", cenarios.dynamoIntegrationFalsy],
   ])("Test: %s ", async (_, cenario) => {
