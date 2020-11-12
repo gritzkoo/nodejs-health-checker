@@ -11,11 +11,20 @@ export function checkMemcachedClient(config: IntegrationConfig): Promise<HTTPChe
   return new Promise((resolve, _) => {
     const client = new Memcached(config.host, {
       timeout: config.timeout,
+      retry: 1,
+      retries: 1,
+    });
+    client.on("issue", (error) =>{
+      client.end();
+      resolve({
+        status: false,
+        error
+      });
     });
     client.stats((error, status) => {
       client.end();
       resolve({
-        status: !!status[0],
+        status: !!status.length,
         error,
       });
     });

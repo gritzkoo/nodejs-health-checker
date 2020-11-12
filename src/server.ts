@@ -21,18 +21,34 @@ server.get("/health-check/readiness", async (_, res) => {
         {
           type: HealthTypes.Redis,
           name: "redis integration",
-          host: "redis",
+          host: "localhost",
         },
         {
           type: HealthTypes.Memcached,
           name: "My memcache integration",
-          host: "memcache:11211",
+          host: "localhost:11211",
+        },
+        {
+          type: HealthTypes.Memcached,
+          name: "My memcache integration false",
+          host: "localhost:11299",
         },
         {
           type: HealthTypes.Web,
           name: "my web api integration",
           host: "https://github.com/status",
           headers: [{ key: "Accept", value: "application/json" }],
+        },
+        {
+          type: HealthTypes.Dynamo,
+          name: "my dynamo",
+          host: "http://localhost",
+          port: 8000,
+          Aws: {
+            region: "us-east-1",
+            access_key_id: "",
+            secret_access_key: "",
+          },
         },
       ],
     })

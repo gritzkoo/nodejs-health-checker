@@ -25,6 +25,9 @@ export const cenarios: HealthCheckDetailedTestCenario = {
       type: HealthTypes.Redis,
       host: "localhost",
       port: 100,
+      auth: {
+        password: "sdf",
+      },
     },
   },
   memcachedTruthy: {
@@ -34,7 +37,16 @@ export const cenarios: HealthCheckDetailedTestCenario = {
       type: HealthTypes.Memcached,
       host: "localhost",
       port: 11211,
-      timeout: 100,
+    },
+  },
+  memcachedDefaultTimeout: {
+    expected: true,
+    config: {
+      name: "jest-test-memcached",
+      type: HealthTypes.Memcached,
+      host: "localhost",
+      port: 11211,
+      timeout:1001
     },
   },
   memcachedFalsy: {
@@ -43,26 +55,59 @@ export const cenarios: HealthCheckDetailedTestCenario = {
       name: "jest-test-memcached",
       type: HealthTypes.Memcached,
       host: "localhost",
-      port: 100,
-      timeout: 1,
+      port: 11299,
     },
   },
   webIntegrationTruthy: {
     expected: true,
     config: {
-      name: "jest-test-memcached",
+      name: "jest-test-web",
       type: HealthTypes.Web,
       host: "https://github.com/status",
     },
   },
   webIntegrationFalsy: {
+    // status 404
     expected: false,
     config: {
-      name: "jest-test-memcached",
+      name: "jest-test-web",
       type: HealthTypes.Web,
-      host: "https://idonotexist(@#*$()).com/status",
-      timeout: 1,
+      host: "https://github.com/statussssss",
+      timeout: 4000,
       headers: [{ key: "Accept", value: "application/json" }],
+    },
+  },
+  webIntegrationTimeout: {
+    expected: false,
+    config: {
+      name: "jest-test-web",
+      type: HealthTypes.Web,
+      host: "https://github.com/statussssss",
+      timeout: 4,
+      headers: [{ key: "Accept", value: "application/json" }],
+    },
+  },
+  dynamoIntegrationTruthy: {
+    expected: true,
+    config: {
+      type: HealthTypes.Dynamo,
+      name: "jest-test-dynamodb",
+      host: "http://localhost",
+      port: 8000,
+      Aws: {
+        region: "us-east-1",
+        access_key_id: "",
+        secret_access_key: "",
+      },
+    },
+  },
+  dynamoIntegrationFalsy: {
+    expected: false,
+    config: {
+      type: HealthTypes.Dynamo,
+      name: "jest-test-dynamodb",
+      host: "http://localhost",
+      port: 8001,
     },
   },
 };

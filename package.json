@@ -23,7 +23,7 @@
   "homepage": "https://github.com/gritzkoo/nodejs-health-checker#readme",
   "scripts": {
     "dev": "nodemon --watch \"src/\" --exec \"ts-node src/index.ts\" -e ts",
-    "test": "jest --detectOpenHandles",
+    "test": "jest --detectOpenHandles --forceExit",
     "test:coverage": "jest --detectOpenHandles --collect-coverage",
     "format": "prettier --config .prettierrc.json --ignore-unknown --write \"src/**/*.ts\" \"tests/**/*.ts\"",
     "lint": "tslint -p tsconfig.json",
@@ -50,6 +50,7 @@
     "typescript": "^4.0.2"
   },
   "dependencies": {
+    "@aws-sdk/client-dynamodb": "^1.0.0-rc.5",
     "memcached": "^2.2.2",
     "node-fetch": "^2.6.1",
     "redis": "^3.0.2"

@@ -8,6 +8,7 @@ import {
   Integration,
   IntegrationConfig,
 } from "../interfaces/types";
+import { checkDynamodbClient } from "../services/dynamodb-service";
 import { checkMemcachedClient } from "../services/memcache-service";
 import { checkRedisClient } from "../services/redis-service";
 import { checkWebIntegration } from "../services/web-service";
@@ -30,7 +31,7 @@ export function HealthcheckerSimpleCheck(): ApplicationHealthSimple {
 export async function HealthcheckerDetailedCheck(config: ApplicationConfig): Promise<ApplicationHealthDetailed> {
   const promisesList: Promise<Integration>[] = [];
   const start = new Date().getTime();
-  config.integrations.forEach(async (item) => {
+  config.integrations.forEach((item) => {
     switch (item.type) {
       case HealthTypes.Redis:
         promisesList.push(redisCheck(item));
@@ -41,10 +42,13 @@ export async function HealthcheckerDetailedCheck(config: ApplicationConfig): Pro
       case HealthTypes.Web:
         promisesList.push(webCheck(resolveHost(item)));
         break;
+      case HealthTypes.Dynamo:
+        promisesList.push(dynamoCheck(resolveHost(item)));
+        break;
     }
   });
-  const results = Promise.all(promisesList);
-  const integrations = (await results).map((item) => item);
+  const results = await Promise.all(promisesList);
+  const integrations = results.map((item) => item);
   return {
     name: config.name || "",
     version: config.version || "",
@@ -64,7 +68,7 @@ async function redisCheck(config: IntegrationConfig): Promise<Integration> {
   config.port = config.port || Defaults.RedisPort;
   config.db = config.db || Defaults.RedisDB;
   return {
-    name: config.name || "",
+    name: config.name,
     kind: HealthIntegration.RedisIntegration,
     status: result.status,
     response_time: getDeltaTime(start),
@@ -77,20 +81,17 @@ async function redisCheck(config: IntegrationConfig): Promise<Integration> {
  * @param config IntegrationConfig with memcached parameters
  */
 async function memcacheCheck(config: IntegrationConfig): Promise<Integration> {
-  return new Promise((resolve, _) => {
-    const start = new Date().getTime();
-    config.timeout = config.timeout || Defaults.MemcachedTimeout;
-    checkMemcachedClient(config).then((check) => {
-      resolve({
-        name: config.name || "",
-        kind: HealthIntegration.MemcachedIntegration,
-        status: check.status,
-        response_time: getDeltaTime(start),
-        url: config.host,
-        error: check.error,
-      });
-    });
-  });
+  const start = new Date().getTime();
+  config.timeout = config.timeout || Defaults.MemcachedTimeout;
+  const check = await checkMemcachedClient(config);
+  return {
+    name: config.name,
+    kind: HealthIntegration.MemcachedIntegration,
+    status: check.status,
+    response_time: getDeltaTime(start),
+    url: config.host,
+    error: check.error,
+  };
 }
 /**
  * memcacheCheck used to check all Memcached integrations informed
@@ -101,8 +102,22 @@ async function webCheck(config: IntegrationConfig): Promise<Integration> {
   config.timeout = config.timeout || Defaults.WebTimeout;
   const result = await checkWebIntegration(config);
   return {
-    name: config.name || "",
+    name: config.name,
     kind: HealthIntegration.WebServiceIntegration,
+    status: result.status,
+    response_time: getDeltaTime(start),
+    url: config.host,
+    error: result.error,
+  };
+}
+
+async function dynamoCheck(config: IntegrationConfig): Promise<Integration> {
+  const start = new Date().getTime();
+  config.timeout = config.timeout || Defaults.WebTimeout;
+  const result = await checkDynamodbClient(config);
+  return {
+    name: config.name,
+    kind: HealthIntegration.DynamoDbIntegration,
     status: result.status,
     response_time: getDeltaTime(start),
     url: config.host,

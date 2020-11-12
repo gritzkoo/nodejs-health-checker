@@ -54,6 +54,13 @@ This is a Node package that allows you to track the health of your application, 
             "status": true,
             "response_time": 0.511,
             "url": "https://github.com/status"
+        },
+        {
+            "name": "my dynamo",
+            "kind": "AWS Dynamo DB",
+            "status": true,
+            "response_time": 0.004,
+            "url": "http://localhost:8000",
         }
     ]
 }
@@ -70,6 +77,7 @@ npm i nodejs-health-checker
 - [x] Redis
 - [x] Memcached
 - [x] Web integration (https)
+- [x] AWS DynamoDB
 
 ## How to use
 
@@ -118,6 +126,17 @@ server.get("/health-check/readiness", async (_, res) => {
           host: "https://github.com/status",
           headers: [{ key: "Accept", value: "application/json" }],
         },
+        {
+          type: HealthTypes.Dynamo,
+          name: "my dynamo",
+          host: "http://localhost",
+          port: 8000,
+          Aws: {
+            region: "us-east-1",
+            access_key_id: "",
+            secret_access_key: "",
+          },
+        },
       ],
     })
   );
@@ -126,7 +145,7 @@ server.get("/health-check/readiness", async (_, res) => {
 export default server;
 ```
 
-And then, you could call this endpoints manually to see your application health, but, if you are using modern kubernetes deployment, you can config your chart to check your application with the setup below:
+And then, you could call these endpoints manually to see your application health, but, if you are using modern Kubernetes deployment, you can config your chart to check your application with the setup below:
 
 ```yaml
 apiVersion: v1
