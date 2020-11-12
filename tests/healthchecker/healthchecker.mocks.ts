@@ -65,4 +65,32 @@ export const cenarios: HealthCheckDetailedTestCenario = {
       headers: [{ key: "Accept", value: "application/json" }],
     },
   },
+  dynamoIntegrationTruthy: {
+    expected: true,
+    config: {
+      type: HealthTypes.Dynamo,
+      name: "jest-test-dynamodb",
+      host: "http://localhost",
+      port: 8000,
+      Aws: {
+        region: "us-east-1",
+        access_key_id: "",
+        secret_access_key: "",
+      },
+    },
+  },
+  dynamoIntegrationFalsy: {
+    expected: false,
+    config: {
+      type: HealthTypes.Dynamo,
+      name: "jest-test-dynamodb",
+      host: "http://localhost",
+      port: 8001,
+      Aws: {
+        region: "us-east-1",
+        access_key_id: "",
+        secret_access_key: "",
+      },
+    },
+  },
 };

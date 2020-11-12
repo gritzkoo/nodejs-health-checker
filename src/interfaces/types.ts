@@ -44,6 +44,14 @@ export interface IntegrationConfig {
   db?: number;
   timeout?: number;
   auth?: Auth;
+  Aws?: Aws;
+}
+
+// Aws is the interface to config aws services (dynamo)
+export interface Aws {
+  region: string;
+  access_key_id?: string;
+  secret_access_key?: string;
 }
 // HTTPHeader used to setup webservices integrations
 export interface HTTPHeader {
@@ -55,12 +63,14 @@ export enum HealthTypes {
   Redis = "Redis",
   Memcached = "Memcached",
   Web = "Web",
+  Dynamo = "Dynamo",
 }
 // Mapped types for kinds of integrations
 export enum HealthIntegration {
   RedisIntegration = "Redis DB integration",
   MemcachedIntegration = "Memcached integraton",
   WebServiceIntegration = "Web integrated API",
+  DynamoDbIntegration = "AWS Dynamo DB",
 }
 // DefaultTimeOuts define all integration default timeouts
 export enum Defaults {

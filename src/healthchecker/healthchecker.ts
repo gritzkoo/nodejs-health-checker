@@ -8,6 +8,7 @@ import {
   Integration,
   IntegrationConfig,
 } from "../interfaces/types";
+import { checkDynamodbClient } from "../services/dynamodb-service";
 import { checkMemcachedClient } from "../services/memcache-service";
 import { checkRedisClient } from "../services/redis-service";
 import { checkWebIntegration } from "../services/web-service";
@@ -40,6 +41,9 @@ export async function HealthcheckerDetailedCheck(config: ApplicationConfig): Pro
         break;
       case HealthTypes.Web:
         promisesList.push(webCheck(resolveHost(item)));
+        break;
+      case HealthTypes.Dynamo:
+        promisesList.push(dynamoCheck(resolveHost(item)));
         break;
     }
   });
@@ -103,6 +107,20 @@ async function webCheck(config: IntegrationConfig): Promise<Integration> {
   return {
     name: config.name || "",
     kind: HealthIntegration.WebServiceIntegration,
+    status: result.status,
+    response_time: getDeltaTime(start),
+    url: config.host,
+    error: result.error,
+  };
+}
+
+async function dynamoCheck(config: IntegrationConfig): Promise<Integration> {
+  const start = new Date().getTime();
+  config.timeout = config.timeout || Defaults.WebTimeout;
+  const result = await checkDynamodbClient(config);
+  return {
+    name: config.name || "",
+    kind: HealthIntegration.DynamoDbIntegration,
     status: result.status,
     response_time: getDeltaTime(start),
     url: config.host,

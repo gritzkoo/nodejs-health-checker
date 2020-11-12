@@ -34,6 +34,17 @@ server.get("/health-check/readiness", async (_, res) => {
           host: "https://github.com/status",
           headers: [{ key: "Accept", value: "application/json" }],
         },
+        {
+          type: HealthTypes.Dynamo,
+          name: "my dynamo",
+          host: "http://localhost",
+          port: 8000,
+          Aws: {
+            region: "us-east-1",
+            access_key_id: "",
+            secret_access_key: "",
+          },
+        },
       ],
     })
   );

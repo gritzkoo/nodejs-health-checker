@@ -15,6 +15,8 @@ describe("Testing the main funcionalyties", () => {
     // ["should memcached be tested and return: falsy", cenarios.memcachedFalsy], // lib memcache can't handle falsy in test mode
     ["should web be tested and return: truthy", cenarios.webIntegrationTruthy],
     ["should web be tested and return: falsy", cenarios.webIntegrationFalsy],
+    ["should Aws DynamoBD be tested and return: truthy", cenarios.dynamoIntegrationTruthy],
+    ["should Aws DynamoBD be tested and return: falsy", cenarios.dynamoIntegrationFalsy],
   ])("Test: %s ", async (_, cenario) => {
     const result = await HealthcheckerDetailedCheck({
       integrations: [cenario.config],
