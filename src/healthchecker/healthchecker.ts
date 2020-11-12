@@ -31,7 +31,7 @@ export function HealthcheckerSimpleCheck(): ApplicationHealthSimple {
 export async function HealthcheckerDetailedCheck(config: ApplicationConfig): Promise<ApplicationHealthDetailed> {
   const promisesList: Promise<Integration>[] = [];
   const start = new Date().getTime();
-  config.integrations.forEach(async (item) => {
+  config.integrations.forEach((item) => {
     switch (item.type) {
       case HealthTypes.Redis:
         promisesList.push(redisCheck(item));
@@ -47,8 +47,8 @@ export async function HealthcheckerDetailedCheck(config: ApplicationConfig): Pro
         break;
     }
   });
-  const results = Promise.all(promisesList);
-  const integrations = (await results).map((item) => item);
+  const results = await Promise.all(promisesList);
+  const integrations = results.map((item) => item);
   return {
     name: config.name || "",
     version: config.version || "",
@@ -81,20 +81,17 @@ async function redisCheck(config: IntegrationConfig): Promise<Integration> {
  * @param config IntegrationConfig with memcached parameters
  */
 async function memcacheCheck(config: IntegrationConfig): Promise<Integration> {
-  return new Promise((resolve, _) => {
-    const start = new Date().getTime();
-    config.timeout = config.timeout || Defaults.MemcachedTimeout;
-    checkMemcachedClient(config).then((check) => {
-      resolve({
-        name: config.name,
-        kind: HealthIntegration.MemcachedIntegration,
-        status: check.status,
-        response_time: getDeltaTime(start),
-        url: config.host,
-        error: check.error,
-      });
-    });
-  });
+  const start = new Date().getTime();
+  config.timeout = config.timeout || Defaults.MemcachedTimeout;
+  const check = await checkMemcachedClient(config);
+  return {
+    name: config.name,
+    kind: HealthIntegration.MemcachedIntegration,
+    status: check.status,
+    response_time: getDeltaTime(start),
+    url: config.host,
+    error: check.error,
+  };
 }
 /**
  * memcacheCheck used to check all Memcached integrations informed

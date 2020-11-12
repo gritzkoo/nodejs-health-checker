@@ -37,7 +37,6 @@ export const cenarios: HealthCheckDetailedTestCenario = {
       type: HealthTypes.Memcached,
       host: "localhost",
       port: 11211,
-      timeout: 100,
     },
   },
   memcachedDefaultTimeout: {
@@ -47,6 +46,7 @@ export const cenarios: HealthCheckDetailedTestCenario = {
       type: HealthTypes.Memcached,
       host: "localhost",
       port: 11211,
+      timeout:1001
     },
   },
   memcachedFalsy: {
@@ -55,7 +55,7 @@ export const cenarios: HealthCheckDetailedTestCenario = {
       name: "jest-test-memcached",
       type: HealthTypes.Memcached,
       host: "localhost",
-      port: 100,
+      port: 11299,
     },
   },
   webIntegrationTruthy: {

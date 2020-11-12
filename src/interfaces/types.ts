@@ -77,7 +77,7 @@ export enum Defaults {
   RedisTimeout = 2 * 1000,
   RedisDB = 0,
   RedisPort = 6379,
-  MemcachedTimeout = 1 * 100,
+  MemcachedTimeout = 1000,
   MemcachePort = 11211,
   WebTimeout = 10 * 1000,
 }
