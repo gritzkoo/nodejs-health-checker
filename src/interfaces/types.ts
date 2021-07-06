@@ -1,3 +1,5 @@
+import { Dialect } from "sequelize/types";
+
 /**
  * ApplicationHealth used to check all application integrations
  * and return status of each of then
@@ -45,6 +47,11 @@ export interface IntegrationConfig {
   timeout?: number;
   auth?: Auth;
   Aws?: Aws;
+  dbName?: string;
+  dbUser?: string;
+  dbPwd?: string;
+  dbDialect?: Dialect;
+  dbPort?: number;
 }
 
 // Aws is the interface to config aws services (dynamo)
@@ -64,6 +71,7 @@ export enum HealthTypes {
   Memcached = "Memcached",
   Web = "Web",
   Dynamo = "Dynamo",
+  Database = "Database",
 }
 // Mapped types for kinds of integrations
 export enum HealthIntegration {
@@ -71,6 +79,7 @@ export enum HealthIntegration {
   MemcachedIntegration = "Memcached integraton",
   WebServiceIntegration = "Web integrated API",
   DynamoDbIntegration = "AWS Dynamo DB",
+  DatabaseIntegration = "Database integration",
 }
 // DefaultTimeOuts define all integration default timeouts
 export enum Defaults {
