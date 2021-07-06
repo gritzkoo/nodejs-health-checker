@@ -7,6 +7,13 @@ jobs:
       matrix:
         node-version: [10.x, 12.x, 14.x]
         redis-version: [4, 5, 6]
+    services:
+      postgresql:
+        image: postgres
+        env:
+          POSTGRES_PASSWORD: root
+        ports:
+          - 5432:5432
 
     steps:
       - name: Git checkout

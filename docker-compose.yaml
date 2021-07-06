@@ -32,7 +32,6 @@ services:
 
   postgresql:
     image: postgres
-    restart: always
     environment:
       POSTGRES_PASSWORD: root
     ports:
@@ -49,6 +48,7 @@ services:
       - redis
       - memcache
       - dynamodb
+      - postgresql
   lint:
     build:
       context: .

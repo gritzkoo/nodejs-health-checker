@@ -95,3 +95,10 @@ export interface HTTPChecker {
   status: boolean;
   error?: any;
 }
+// Dialects accepted
+export enum Dialects {
+  postgres = "postgres",
+  mysql = "mysql",
+  sqlite = "sqlite",
+  mariadb = "mariadb",
+}
