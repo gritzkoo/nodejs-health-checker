@@ -13,6 +13,7 @@ services:
       - redis
       - memcache
       - dynamodb
+      - postgresql
 
   redis:
     image: redis
@@ -29,7 +30,15 @@ services:
     ports:
       - "8000:8000"
 
-      #the services below is a short hand to use npm in docker context
+  postgresql:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: root
+    ports:
+      - 5432:5432
+
+  #the services below is a short hand to use npm in docker context
   test:
     build:
       context: .
