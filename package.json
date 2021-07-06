@@ -51,9 +51,15 @@
   },
   "dependencies": {
     "@aws-sdk/client-dynamodb": "^1.0.0-rc.5",
+    "mariadb": "^2.5.4",
     "memcached": "^2.2.2",
+    "mysql2": "^2.2.5",
     "node-fetch": "^2.6.1",
-    "redis": "^3.1.2"
+    "pg": "^8.6.0",
+    "pg-hstore": "^2.3.4",
+    "redis": "^3.1.2",
+    "sequelize": "^6.6.5",
+    "sqlite3": "^5.0.2"
   },
   "files": [
     "dist/**/*"
