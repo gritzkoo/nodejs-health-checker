@@ -78,6 +78,7 @@ npm i nodejs-health-checker
 - [x] Memcached
 - [x] Web integration (https)
 - [x] AWS DynamoDB
+- [x] Sequelize (authored by @MikeG96)
 
 ## How to use
 
@@ -89,7 +90,7 @@ import {
   HealthcheckerDetailedCheck,
   HealthcheckerSimpleCheck
 } from "./healthchecker/healthchecker";
-import { HealthTypes } from "./interfaces/types";
+import { Dialects, HealthTypes } from "./interfaces/types";
 
 const server = express();
 
@@ -136,6 +137,16 @@ server.get("/health-check/readiness", async (_, res) => {
             access_key_id: "",
             secret_access_key: "",
           },
+        },
+        {
+          type: HealthTypes.Database,
+          name: "my database",
+          host: "localhost",
+          dbPort: 5432,
+          dbName: "postgres",
+          dbUser: "postgres",
+          dbPwd: "root",
+          dbDialect: Dialects.postgres,
         },
       ],
     })
