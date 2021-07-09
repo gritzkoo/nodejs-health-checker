@@ -1,6 +1,6 @@
 import express from "express";
 import { HealthcheckerDetailedCheck, HealthcheckerSimpleCheck } from "./healthchecker/healthchecker";
-import { HealthTypes } from "./interfaces/types";
+import { Dialects, HealthTypes } from "./interfaces/types";
 
 const server = express();
 
@@ -58,7 +58,7 @@ server.get("/health-check/readiness", async (_, res) => {
           dbName: "postgres",
           dbUser: "postgres",
           dbPwd: "root",
-          dbDialect: "postgres",
+          dbDialect: Dialects.postgres,
         },
       ],
     })
