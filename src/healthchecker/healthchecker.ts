@@ -8,6 +8,7 @@ import {
   Integration,
   IntegrationConfig,
 } from "../interfaces/types";
+import { checkDatabaseClient } from "../services/database-service";
 import { checkDynamodbClient } from "../services/dynamodb-service";
 import { checkMemcachedClient } from "../services/memcache-service";
 import { checkRedisClient } from "../services/redis-service";
@@ -44,6 +45,9 @@ export async function HealthcheckerDetailedCheck(config: ApplicationConfig): Pro
         break;
       case HealthTypes.Dynamo:
         promisesList.push(dynamoCheck(resolveHost(item)));
+        break;
+      case HealthTypes.Database:
+        promisesList.push(databaseCheck(resolveHost(item)));
         break;
     }
   });
@@ -124,6 +128,21 @@ async function dynamoCheck(config: IntegrationConfig): Promise<Integration> {
     error: result.error,
   };
 }
+
+async function databaseCheck(config: IntegrationConfig): Promise<Integration> {
+  const start = new Date().getTime();
+  config.timeout = config.timeout || Defaults.WebTimeout;
+  const result = await checkDatabaseClient(config);
+  return {
+    name: config.name,
+    kind: HealthIntegration.DatabaseIntegration,
+    status: result.status,
+    response_time: getDeltaTime(start),
+    url: config.host,
+    error: result.error,
+  };
+}
+
 /**
  * used to concat host:port
  * @param config IntegrationConfig

@@ -18,7 +18,9 @@ describe("Testing the main funcionalyties", () => {
     ["should web be tested and get a timeout and return: falsy", cenarios.webIntegrationTimeout],
     ["should memcached be tested and return: truthy", cenarios.memcachedTruthy],
     ["should memcached be tested and use default timeout and return: truthy", cenarios.memcachedDefaultTimeout],
-    ["should memcached be tested and return: falsy", cenarios.memcachedFalsy], // lib memcache can't handle falsy in test mode
+    ["should memcached be tested and return: falsy", cenarios.memcachedFalsy], // lib memcache can't handle falsy in test mode,
+    ["should database be tested and return: truthy", cenarios.databaseIntegrationTruthy],
+    ["should database be tested and return: falsy", cenarios.databaseIntegrationFalsy],
   ])("Test: %s ", async (_, cenario) => {
     const result = await HealthcheckerDetailedCheck({
       integrations: [cenario.config],

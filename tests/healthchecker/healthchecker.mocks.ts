@@ -1,4 +1,4 @@
-import { HealthTypes, IntegrationConfig } from "../../src/interfaces/types";
+import { Dialects, HealthTypes, IntegrationConfig } from "../../src/interfaces/types";
 
 export interface HealthCheckDetailedTestCenario {
   [key: string]: HealthCheckDetailedTestconfig;
@@ -46,7 +46,7 @@ export const cenarios: HealthCheckDetailedTestCenario = {
       type: HealthTypes.Memcached,
       host: "localhost",
       port: 11211,
-      timeout:1001
+      timeout: 1001,
     },
   },
   memcachedFalsy: {
@@ -108,6 +108,28 @@ export const cenarios: HealthCheckDetailedTestCenario = {
       name: "jest-test-dynamodb",
       host: "http://localhost",
       port: 8001,
+    },
+  },
+  databaseIntegrationTruthy: {
+    expected: true,
+    config: {
+      type: HealthTypes.Database,
+      name: "jest-test-postgres",
+      host: "localhost",
+      dbPort: 5432,
+      dbName: "postgres",
+      dbUser: "postgres",
+      dbPwd: "root",
+      dbDialect: Dialects.postgres,
+    },
+  },
+  databaseIntegrationFalsy: {
+    expected: false,
+    config: {
+      type: HealthTypes.Database,
+      name: "jest-test-postgres",
+      host: "http://localhost",
+      dbPort: 8001,
     },
   },
 };

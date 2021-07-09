@@ -14,11 +14,11 @@ export function checkMemcachedClient(config: IntegrationConfig): Promise<HTTPChe
       retry: 1,
       retries: 1,
     });
-    client.on("issue", (error) =>{
+    client.on("issue", (error) => {
       client.end();
       resolve({
         status: false,
-        error
+        error,
       });
     });
     client.stats((error, status) => {

@@ -50,6 +50,16 @@ server.get("/health-check/readiness", async (_, res) => {
             secret_access_key: "",
           },
         },
+        {
+          type: HealthTypes.Database,
+          name: "my database",
+          host: "localhost",
+          dbPort: 5432,
+          dbName: "postgres",
+          dbUser: "postgres",
+          dbPwd: "root",
+          dbDialect: "postgres",
+        },
       ],
     })
   );
