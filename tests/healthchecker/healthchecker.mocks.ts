@@ -1,15 +1,15 @@
 import { Dialects, HealthTypes, IntegrationConfig } from "../../src/interfaces/types";
 
-export interface HealthCheckDetailedTestCenario {
-  [key: string]: HealthCheckDetailedTestconfig;
+export interface HealthCheckDetailedTestScenario {
+  [key: string]: HealthCheckDetailedTestConfig;
 }
 
-export interface HealthCheckDetailedTestconfig {
+export interface HealthCheckDetailedTestConfig {
   expected: boolean;
   config: IntegrationConfig;
 }
 // all this tests must be exec in docker context
-export const cenarios: HealthCheckDetailedTestCenario = {
+export const scenarios: HealthCheckDetailedTestScenario = {
   redisTruthy: {
     expected: true,
     config: {
@@ -130,6 +130,53 @@ export const cenarios: HealthCheckDetailedTestCenario = {
       name: "jest-test-postgres",
       host: "http://localhost",
       dbPort: 8001,
+    },
+  },
+  customIntegrationTruthy: {
+    expected: true,
+    config: {
+      type: HealthTypes.Custom,
+      name: "custom-integration",
+      host: "not-needed",
+      customCheckerFunction: async () => {
+        return {
+          status: true,
+        };
+      },
+    },
+  },
+  customIntegrationFalsy: {
+    expected: false,
+    config: {
+      type: HealthTypes.Custom,
+      name: "custom-integration",
+      host: "not-needed",
+      customCheckerFunction: async () => {
+        return {
+          status: false,
+          error: { message: "Something has failed" },
+        };
+      },
+    },
+  },
+  customIntegrationMissingFunction: {
+    expected: false,
+    config: {
+      type: HealthTypes.Custom,
+      name: "custom-integration-missing-function",
+      host: "my-custom-integration-host",
+      customCheckerFunction: undefined,
+    },
+  },
+  customIntegrationFunctionThrows: {
+    expected: false,
+    config: {
+      type: HealthTypes.Custom,
+      name: "custom-integration-missing-function",
+      host: "my-custom-integration-host",
+      customCheckerFunction: () => {
+        throw new Error("Help!");
+      },
     },
   },
 };

@@ -79,6 +79,7 @@ npm i nodejs-health-checker
 - [x] Web integration (https)
 - [x] AWS DynamoDB
 - [x] Sequelize (authored by @MikeG96)
+- [x] Custom integration support (authored by @youngpayters)
 
 ## How to use
 
@@ -109,6 +110,7 @@ server.get("/health-check/readiness", async (_, res) => {
       //   HealthTypes.Redis,
       //   HealthTypes.Memcached,
       //   HealthTypes.Web
+      //   HealthTypes.Custom
       // ]
       integrations: [
         {
@@ -147,6 +149,12 @@ server.get("/health-check/readiness", async (_, res) => {
           dbUser: "postgres",
           dbPwd: "root",
           dbDialect: Dialects.postgres,
+        },
+        {
+          type: HealthTypes.Custom,
+          name: "my custom integration",
+          host: "localhost",
+          customCheckerFunction: () => { return { status: true, error: {} }},
         },
       ],
     })
