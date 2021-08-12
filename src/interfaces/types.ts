@@ -52,6 +52,7 @@ export interface IntegrationConfig {
   dbPwd?: string;
   dbDialect?: Dialect;
   dbPort?: number;
+  customCheckerFunction?(): Promise<HTTPChecker>;
 }
 
 // Aws is the interface to config aws services (dynamo)
@@ -72,6 +73,7 @@ export enum HealthTypes {
   Web = "Web",
   Dynamo = "Dynamo",
   Database = "Database",
+  Custom = "Custom",
 }
 // Mapped types for kinds of integrations
 export enum HealthIntegration {
@@ -80,6 +82,7 @@ export enum HealthIntegration {
   WebServiceIntegration = "Web integrated API",
   DynamoDbIntegration = "AWS Dynamo DB",
   DatabaseIntegration = "Database integration",
+  CustomIntegration = "Custom integration",
 }
 // DefaultTimeOuts define all integration default timeouts
 export enum Defaults {

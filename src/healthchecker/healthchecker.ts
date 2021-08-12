@@ -49,6 +49,9 @@ export async function HealthcheckerDetailedCheck(config: ApplicationConfig): Pro
       case HealthTypes.Database:
         promisesList.push(databaseCheck(resolveHost(item)));
         break;
+      case HealthTypes.Custom:
+        promisesList.push(customCheck(item));
+        break;
     }
   });
   const results = await Promise.all(promisesList);
@@ -141,6 +144,37 @@ async function databaseCheck(config: IntegrationConfig): Promise<Integration> {
     url: config.host,
     error: result.error,
   };
+}
+
+/**
+ * Runs the custom checker function.
+ * Any exceptions are caught and error is sent as part of
+ * @param config IntegrationConfig for the custom function check
+ * @returns Integration result
+ */
+async function customCheck(config: IntegrationConfig): Promise<Integration> {
+  const start = new Date().getTime();
+  config.timeout = config.timeout || Defaults.WebTimeout;
+  try {
+    const result = config.customCheckerFunction ? await config.customCheckerFunction() : { status: false, error: "No custom function present" };
+    return {
+      name: config.name,
+      kind: HealthIntegration.DatabaseIntegration,
+      status: result.status,
+      response_time: getDeltaTime(start),
+      url: config.host,
+      error: result.error,
+    };
+  } catch (error) {
+    return {
+      name: config.name,
+      kind: HealthIntegration.DatabaseIntegration,
+      status: false,
+      response_time: getDeltaTime(start),
+      url: config.host,
+      error,
+    };
+  }
 }
 
 /**
