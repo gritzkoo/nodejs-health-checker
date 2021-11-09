@@ -159,7 +159,7 @@ async function customCheck(config: IntegrationConfig): Promise<Integration> {
     const result = config.customCheckerFunction ? await config.customCheckerFunction() : { status: false, error: "No custom function present" };
     return {
       name: config.name,
-      kind: HealthIntegration.DatabaseIntegration,
+      kind: HealthIntegration.CustomIntegration,
       status: result.status,
       response_time: getDeltaTime(start),
       url: config.host,
@@ -168,7 +168,7 @@ async function customCheck(config: IntegrationConfig): Promise<Integration> {
   } catch (error) {
     return {
       name: config.name,
-      kind: HealthIntegration.DatabaseIntegration,
+      kind: HealthIntegration.CustomIntegration,
       status: false,
       response_time: getDeltaTime(start),
       url: config.host,
