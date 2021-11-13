@@ -164,7 +164,7 @@ server.get("/health-check/readiness", async (_, res) => {
 export default server;
 ```
 
-And then, you could call these endpoints manually to see your application health, but, if you are using modern Kubernetes deployment, you can config your chart to check your application with the setup below:
+And then, you could call these endpoints manually to see your application health, but, if you are using modern Kubernetes deployment, you can config your chart to check your application with the setup below. There is an [Example](https://runkit.com/gritzkoo/618d325cb041300008eb7bfe) on runkit too.
 
 ```yaml
 apiVersion: v1
@@ -201,4 +201,41 @@ spec:
           value: Awesome
       initialDelaySeconds: 3
       periodSeconds: 3
+```
+
+### Import using require
+
+If your application needs to use the `require` instead of ECMAScript, you should import on this way:
+
+```typescript
+const express = require('express');
+const {
+    HealthcheckerSimpleCheck,
+    HealthcheckerDetailedCheck
+} = require("nodejs-health-checker/dist/healthchecker/healthchecker");
+const { HealthTypes } = require("nodejs-health-checker/dist/interfaces/types");
+const server = express();
+server.get('/', (req, res) => {
+    res.json({ status: "I'm alive!" });
+})
+server.get('/health-check/liveness', (req, res) => {
+    res.json(HealthcheckerSimpleCheck())
+})
+server.get('/health-check/readiness', async (req, res) => {
+    let result = await HealthcheckerDetailedCheck({
+        name: 'example',
+        version: 'v1.0.0',
+        integrations: [
+            {
+                type: HealthTypes.Web,
+                name: 'A simple api integration check',
+                host: 'https://github.com/status'
+            }
+        ]
+    });
+    res.json(result);
+})
+server.listen(3000, () => {
+    console.log('server started at port 3000')
+})
 ```
