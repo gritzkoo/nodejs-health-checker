@@ -54,7 +54,7 @@
     "mariadb": "^2.5.4",
     "memcached": "^2.2.2",
     "mysql2": "^2.3.0",
-    "node-fetch": "^2.6.1",
+    "node-fetch": "^3.1.1",
     "pg": "^8.7.1",
     "pg-hstore": "^2.3.4",
     "redis": "^3.1.2",
