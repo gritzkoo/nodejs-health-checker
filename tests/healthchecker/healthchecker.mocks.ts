@@ -1,4 +1,5 @@
 import { Dialects, HealthTypes, IntegrationConfig } from "../../src/interfaces/types";
+import { REDIS_HOST, MEMCACHED_HOST, WEB_HOST, DYNAMO_HOST, DATABASE_HOST } from "../../src/envs";
 
 export interface HealthCheckDetailedTestScenario {
   [key: string]: HealthCheckDetailedTestConfig;
@@ -15,7 +16,7 @@ export const scenarios: HealthCheckDetailedTestScenario = {
     config: {
       name: "jest-test-redis",
       type: HealthTypes.Redis,
-      host: "localhost",
+      host: REDIS_HOST,
     },
   },
   redisFalsy: {
@@ -23,7 +24,7 @@ export const scenarios: HealthCheckDetailedTestScenario = {
     config: {
       name: "jest-test-redis",
       type: HealthTypes.Redis,
-      host: "localhost",
+      host: REDIS_HOST,
       port: 100,
       auth: {
         password: "sdf",
@@ -35,7 +36,7 @@ export const scenarios: HealthCheckDetailedTestScenario = {
     config: {
       name: "jest-test-memcached",
       type: HealthTypes.Memcached,
-      host: "localhost",
+      host: MEMCACHED_HOST,
       port: 11211,
     },
   },
@@ -44,7 +45,7 @@ export const scenarios: HealthCheckDetailedTestScenario = {
     config: {
       name: "jest-test-memcached",
       type: HealthTypes.Memcached,
-      host: "localhost",
+      host: MEMCACHED_HOST,
       port: 11211,
       timeout: 1001,
     },
@@ -54,7 +55,7 @@ export const scenarios: HealthCheckDetailedTestScenario = {
     config: {
       name: "jest-test-memcached",
       type: HealthTypes.Memcached,
-      host: "localhost",
+      host: MEMCACHED_HOST,
       port: 11299,
     },
   },
@@ -63,7 +64,7 @@ export const scenarios: HealthCheckDetailedTestScenario = {
     config: {
       name: "jest-test-web",
       type: HealthTypes.Web,
-      host: "https://github.com/status",
+      host: WEB_HOST,
     },
   },
   webIntegrationFalsy: {
@@ -72,7 +73,7 @@ export const scenarios: HealthCheckDetailedTestScenario = {
     config: {
       name: "jest-test-web",
       type: HealthTypes.Web,
-      host: "https://github.com/statussssss",
+      host: `${WEB_HOST}sssssssss`,
       timeout: 4000,
       headers: [{ key: "Accept", value: "application/json" }],
     },
@@ -82,7 +83,7 @@ export const scenarios: HealthCheckDetailedTestScenario = {
     config: {
       name: "jest-test-web",
       type: HealthTypes.Web,
-      host: "https://github.com/statussssss",
+      host: `${WEB_HOST}sssssssss`,
       timeout: 4,
       headers: [{ key: "Accept", value: "application/json" }],
     },
@@ -92,7 +93,7 @@ export const scenarios: HealthCheckDetailedTestScenario = {
     config: {
       type: HealthTypes.Dynamo,
       name: "jest-test-dynamodb",
-      host: "http://localhost",
+      host: DYNAMO_HOST,
       port: 8000,
       Aws: {
         region: "us-east-1",
@@ -106,7 +107,7 @@ export const scenarios: HealthCheckDetailedTestScenario = {
     config: {
       type: HealthTypes.Dynamo,
       name: "jest-test-dynamodb",
-      host: "http://localhost",
+      host: DYNAMO_HOST,
       port: 8001,
     },
   },
@@ -115,7 +116,7 @@ export const scenarios: HealthCheckDetailedTestScenario = {
     config: {
       type: HealthTypes.Database,
       name: "jest-test-postgres",
-      host: "localhost",
+      host: DATABASE_HOST,
       dbPort: 5432,
       dbName: "postgres",
       dbUser: "postgres",
@@ -128,7 +129,7 @@ export const scenarios: HealthCheckDetailedTestScenario = {
     config: {
       type: HealthTypes.Database,
       name: "jest-test-postgres",
-      host: "http://localhost",
+      host: DATABASE_HOST,
       dbPort: 8001,
     },
   },

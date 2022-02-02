@@ -2,9 +2,16 @@ version: "3.7"
 
 services:
   app:
-    build:
-      context: .
+    &default
+    image: node:14-alpine
+    working_dir: /app/
     command: npm run dev
+    environment:
+      REDIS_HOST: redis
+      MEMCACHED_HOST: memcache
+      WEB_HOST: https://github.com/status
+      DYNAMO_HOST: http://dynamodb
+      DATABASE_HOST: postgresql
     volumes:
       - .:/app
     ports:
@@ -14,6 +21,24 @@ services:
       - memcache
       - dynamodb
       - postgresql
+
+  #the services below is a short hand to use npm in docker context
+  test:
+    <<: *default
+    command: npm run test
+    ports: []
+
+  lint:
+    <<: *default
+    command: npm run lint
+    ports: []
+    depends_on: []
+
+  format:
+    <<: *default
+    command: npm run format
+    ports: []
+    depends_on: []
 
   redis:
     image: redis
@@ -36,32 +61,3 @@ services:
       POSTGRES_PASSWORD: root
     ports:
       - 5432:5432
-
-  #the services below is a short hand to use npm in docker context
-  test:
-    build:
-      context: .
-    command: npm run test
-    volumes:
-      - .:/app
-    depends_on:
-      - redis
-      - memcache
-      - dynamodb
-      - postgresql
-  lint:
-    build:
-      context: .
-    command: npm run lint
-    volumes:
-      - .:/app
-  format:
-    build:
-      context: .
-    command: npm run format
-    volumes:
-      - .:/app
-
-networks:
-  default:
-    name: gritzkoo-nodejs-health-checker
