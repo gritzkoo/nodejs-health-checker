@@ -1,6 +1,7 @@
 import express from "express";
 import { HealthcheckerDetailedCheck, HealthcheckerSimpleCheck } from "./healthchecker/healthchecker";
-import { Dialects, HealthTypes } from "./interfaces/types";
+import { Dialects, HealthTypes, HTTPChecker } from "./interfaces/types";
+import { REDIS_HOST, MEMCACHED_HOST, WEB_HOST, DYNAMO_HOST, DATABASE_HOST } from "./envs";
 
 const server = express();
 
@@ -21,28 +22,28 @@ server.get("/health-check/readiness", async (_, res) => {
         {
           type: HealthTypes.Redis,
           name: "redis integration",
-          host: "localhost",
+          host: REDIS_HOST,
         },
         {
           type: HealthTypes.Memcached,
           name: "My memcache integration",
-          host: "localhost:11211",
+          host: `${MEMCACHED_HOST}:11211`,
         },
         {
           type: HealthTypes.Memcached,
           name: "My memcache integration false",
-          host: "localhost:11299",
+          host: `${MEMCACHED_HOST}:11299`,
         },
         {
           type: HealthTypes.Web,
           name: "my web api integration",
-          host: "https://github.com/status",
+          host: WEB_HOST,
           headers: [{ key: "Accept", value: "application/json" }],
         },
         {
           type: HealthTypes.Dynamo,
           name: "my dynamo",
-          host: "http://localhost",
+          host: DYNAMO_HOST,
           port: 8000,
           Aws: {
             region: "us-east-1",
@@ -53,12 +54,25 @@ server.get("/health-check/readiness", async (_, res) => {
         {
           type: HealthTypes.Database,
           name: "my database",
-          host: "localhost",
+          host: DATABASE_HOST,
           dbPort: 5432,
           dbName: "postgres",
           dbUser: "postgres",
           dbPwd: "root",
           dbDialect: Dialects.postgres,
+        },
+        {
+          type: HealthTypes.Custom,
+          name: "my custom integration",
+          host: "localhost",
+          customCheckerFunction: async (): Promise<HTTPChecker> => {
+            return new Promise((resolve, _) => {
+              resolve({
+                status: true,
+                error: null,
+              });
+            });
+          },
         },
       ],
     })
