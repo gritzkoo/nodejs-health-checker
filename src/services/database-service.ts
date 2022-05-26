@@ -10,6 +10,7 @@ export async function checkDatabaseClient(config: IntegrationConfig): Promise<HT
       dialect: dbDialect || "mysql",
       port: dbPort,
       host,
+      logging: false,
     });
     // check authenticate to database
     try {
