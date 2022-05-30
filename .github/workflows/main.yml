@@ -119,12 +119,12 @@ jobs:
           name: dist-folder
           path: dist
 
-      - name: "Automated Version Bump"
-        uses: "phips28/gh-action-bump-version@master"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          skip-tag: "true"
+      # - name: "Automated Version Bump"
+      #   uses: "phips28/gh-action-bump-version@master"
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #   with:
+      #     skip-tag: "true"
 
       - name: Publish on NPM
         uses: mikeal/merge-release@master
@@ -132,7 +132,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
-      - name: release on Github
-        uses: rymndhng/release-on-push-action@master
-        with:
-          bump_version_scheme: patch
+      # - name: release on Github
+      #   uses: rymndhng/release-on-push-action@master
+      #   with:
+      #     bump_version_scheme: patch
