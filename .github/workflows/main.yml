@@ -1,12 +1,14 @@
 name: test
-on: [push, pull_request]
+on:
+  - push
 jobs:
   test:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [10.x, 12.x, 14.x]
-        redis-version: [4, 5, 6]
+        # keep the versions below up to date with https://nodejs.org/en/about/releases/
+        node-version: [14.x, 16.x, 18.x]
+        redis-version: [6]
     services:
       postgresql:
         image: postgres
@@ -67,7 +69,7 @@ jobs:
       - uses: actions/checkout@v2
       - uses: actions/download-artifact@v2
         with:
-          name: coveragev-12.x
+          name: coveragev-18.x
           path: coverage
       - name: Generate coverage in coverall
         uses: coverallsapp/github-action@master
@@ -106,33 +108,54 @@ jobs:
           path: dist/**/*
           if-no-files-found: error
 
+  validate:
+    name: check version is valid to release
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+      - name: Validate if can be published
+        run: |
+          REVIEW_JS=`npm view --json`
+          ATUAL_VERSION=`cat package.json | jq '.version'`
+          if [[ `echo ${REVIEW_JS} | jq -c '.versions[]'` ]]; then
+            echo ${REVIEW_JS} | jq -c '.versions[]' | while read line; do
+              if [ "${line}" == "${ATUAL_VERSION}" ]; then
+                echo "$line is equals to ${ATUAL_VERSION}"
+                echo "Version already released!"
+                exit 1
+              fi
+            done
+          else
+            echo "all clear to go"
+          fi
   publish:
     name: NPM package publish
     needs:
       - build
+      - validate
     runs-on: ubuntu-latest
     if: github.event_name == 'push' && github.ref == 'refs/heads/master'
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: "16.x"
+          registry-url: "https://registry.npmjs.org"
       - uses: actions/download-artifact@v2
         with:
           name: dist-folder
           path: dist
-
-      # - name: "Automated Version Bump"
-      #   uses: "phips28/gh-action-bump-version@master"
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #   with:
-      #     skip-tag: "true"
-
-      - name: Publish on NPM
-        uses: mikeal/merge-release@master
+      - run: npm ci
+      - run: npm publish
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: Create Release
+        run: |
+          NEW_TAG=`cat package.json | jq -cr ".version"`
+          NOTES=`git log -1 --pretty=format:"%s"`
+          echo ${{ secrets.GITHUB_TOKEN }} | gh auth login --with-token
+          gh release create "v${NEW_TAG}" --title "v${NEW_TAG}" --notes "${NOTES}"
 
-      # - name: release on Github
-      #   uses: rymndhng/release-on-push-action@master
-      #   with:
-      #     bump_version_scheme: patch
