@@ -156,7 +156,7 @@ jobs:
       - name: Create Release
         run: |
           NEW_TAG=`cat package.json | jq -cr ".version"`
-          NOTES=`git log -1 --pretty=format:"%s"`
+          NOTES=`git show -s --format="%s%n%n%b"`
           echo ${{ secrets.GITHUB_TOKEN }} | gh auth login --with-token
           gh release create "v${NEW_TAG}" --title "v${NEW_TAG}" --notes "${NOTES}"
 
