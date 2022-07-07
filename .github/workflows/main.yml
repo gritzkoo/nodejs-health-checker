@@ -50,7 +50,7 @@ jobs:
 
       - name: Install npm in version ${{ matrix.node-version }}
         if: steps.cache-modules.outputs.cache-hit != 'true'
-        run: npm install
+        run: npm install --legacy-peer-deps
 
       - name: Run test in version ${{ matrix.node-version }}
         run: npm run test:coverage
