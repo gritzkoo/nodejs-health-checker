@@ -38,7 +38,7 @@ export interface ApplicationConfig {
 }
 // IntegrationConfig used to inform each integration config
 export interface IntegrationConfig {
-  type: HealthTypes;
+  check: (config: IntegrationConfig) => Promise<Integration>;
   name: string;
   host: string;
   port?: number;
@@ -105,3 +105,7 @@ export enum Dialects {
   sqlite = "sqlite",
   mariadb = "mariadb",
 }
+export type BaseCheckOptions = {
+  name: string;
+  timeout?: number;
+};

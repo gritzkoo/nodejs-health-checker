@@ -1,8 +1,14 @@
 import express from "express";
-import { HealthcheckerDetailedCheck, HealthcheckerSimpleCheck } from "./healthchecker/healthchecker";
-import { Dialects, HealthTypes, HTTPChecker } from "./interfaces/types";
+import { HealthcheckerDetailedCheck } from "./detailedCheck";
+import { Dialects, HTTPChecker } from "./interfaces/types";
 import { REDIS_HOST, MEMCACHED_HOST, WEB_HOST, DYNAMO_HOST, DATABASE_HOST } from "./envs";
-
+import { HealthcheckerSimpleCheck } from "./simpleCheck";
+import { redisCheck } from "./integrations/redis";
+import { memcacheCheck } from "./integrations/memcache";
+import { webCheck } from "./integrations/web";
+import { dynamoCheck } from "./integrations/dynamo";
+import { databaseCheck } from "./integrations/database";
+import { customCheck } from "./integrations/custom";
 const server = express();
 
 server.get("/", (_, res) => {
@@ -19,29 +25,24 @@ server.get("/health-check/readiness", async (_, res) => {
       name: "My node application",
       version: "my version",
       integrations: [
-        {
-          type: HealthTypes.Redis,
+        redisCheck({
           name: "redis integration",
           host: REDIS_HOST,
-        },
-        {
-          type: HealthTypes.Memcached,
-          name: "My memcache integration",
+        }),
+        memcacheCheck({
+          name: "my memcache integration false",
           host: `${MEMCACHED_HOST}:11211`,
-        },
-        {
-          type: HealthTypes.Memcached,
-          name: "My memcache integration false",
+        }),
+        memcacheCheck({
+          name: "my memcache integration false",
           host: `${MEMCACHED_HOST}:11299`,
-        },
-        {
-          type: HealthTypes.Web,
+        }),
+        webCheck({
           name: "my web api integration",
-          host: WEB_HOST,
+          url: WEB_HOST,
           headers: [{ key: "Accept", value: "application/json" }],
-        },
-        {
-          type: HealthTypes.Dynamo,
+        }),
+        dynamoCheck({
           name: "my dynamo",
           host: DYNAMO_HOST,
           port: 8000,
@@ -50,21 +51,18 @@ server.get("/health-check/readiness", async (_, res) => {
             access_key_id: "",
             secret_access_key: "",
           },
-        },
-        {
-          type: HealthTypes.Database,
+        }),
+        databaseCheck({
           name: "my database",
           host: DATABASE_HOST,
-          dbPort: 5432,
+          port: 5432,
           dbName: "postgres",
           dbUser: "postgres",
           dbPwd: "root",
           dbDialect: Dialects.postgres,
-        },
-        {
-          type: HealthTypes.Custom,
-          name: "my custom integration",
-          host: "localhost",
+        }),
+        customCheck({
+          name: "my custom check",
           customCheckerFunction: async (): Promise<HTTPChecker> => {
             return new Promise((resolve, _) => {
               resolve({
@@ -73,7 +71,7 @@ server.get("/health-check/readiness", async (_, res) => {
               });
             });
           },
-        },
+        }),
       ],
     })
   );
