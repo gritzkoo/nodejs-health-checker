@@ -3,7 +3,7 @@ version: "3.7"
 services:
   app:
     &default
-    image: node:16.15.1
+    image: node:18.14.1
     working_dir: /app/
     command: npm run dev
     environment:
