@@ -1,88 +1,44 @@
-import { Dialect } from "sequelize/types";
+export interface Liviness {
+  status: string
+  version: string
+}
+export interface Readiness {
+  name: string
+  version: string
+  status: boolean
+  duration: number
+  integrations: Integrations[]
+}
+export interface Config {
+  name: string
+  version: string
+  integrations: Checkers[]
+}
 
-/**
- * ApplicationHealth used to check all application integrations
- * and return status of each of then
- */
-export interface ApplicationHealthDetailed {
-  name: string;
-  status: boolean;
-  version: string;
-  date: Date;
-  duration: number;
-  integrations: Integration[];
+export interface Checkers {
+  check(): Promise<Integrations>
 }
-// ApplicationHealthSimple used to simple return a string "OK"
-export interface ApplicationHealthSimple {
-  status: string;
-}
-// Integration is the type result for requests
-export interface Integration {
+export interface Integrations {
   name: string;
-  kind: HealthIntegration;
+  kind: kinds;
   status: boolean;
   response_time: number;
   url: string;
   error?: any;
 }
-// Auth is a default  to map user/pass protocol
-export interface Auth {
-  user?: string;
-  password: string;
+export enum kinds {
+  Redis = "Redis DB integration",
+  Mencached = "Memcached integraton",
+  WebAPI = "Web integrated API",
+  AwsDynamoDB = "AWS Dynamo DB",
+  Database = "Database integration",
 }
-// ApplicationConfig is a config contract to init health caller
-export interface ApplicationConfig {
-  name?: string;
-  version?: string;
-  integrations: IntegrationConfig[];
-}
-// IntegrationConfig used to inform each integration config
-export interface IntegrationConfig {
-  type: HealthTypes;
-  name: string;
-  host: string;
-  port?: number;
-  headers?: HTTPHeader[];
-  db?: number;
-  timeout?: number;
-  auth?: Auth;
-  Aws?: Aws;
-  dbName?: string;
-  dbUser?: string;
-  dbPwd?: string;
-  dbDialect?: Dialect;
-  dbPort?: number;
-  customCheckerFunction?(): Promise<HTTPChecker>;
-}
-
-// Aws is the interface to config aws services (dynamo)
-export interface Aws {
-  region?: string;
-  access_key_id?: string;
-  secret_access_key?: string;
-}
-// HTTPHeader used to setup webservices integrations
-export interface HTTPHeader {
-  key: string;
-  value: string;
-}
-// Mapped types for IntegrationConfig
-export enum HealthTypes {
-  Redis = "Redis",
-  Memcached = "Memcached",
-  Web = "Web",
-  Dynamo = "Dynamo",
-  Database = "Database",
-  Custom = "Custom",
-}
-// Mapped types for kinds of integrations
-export enum HealthIntegration {
-  RedisIntegration = "Redis DB integration",
-  MemcachedIntegration = "Memcached integraton",
-  WebServiceIntegration = "Web integrated API",
-  DynamoDbIntegration = "AWS Dynamo DB",
-  DatabaseIntegration = "Database integration",
-  CustomIntegration = "Custom integration",
+/**
+ * Used to calculate all time deltas
+ * @param time is a Date().getTime()
+ */
+export function getDeltaTime(time: number): number {
+  return (new Date().getTime() - time) / 1000;
 }
 // DefaultTimeOuts define all integration default timeouts
 export enum Defaults {
@@ -93,15 +49,7 @@ export enum Defaults {
   MemcachePort = 11211,
   WebTimeout = 10 * 1000,
 }
-// HTTPChecker used to return in all services protocol
-export interface HTTPChecker {
-  status: boolean;
-  error?: any;
-}
-// Dialects accepted
-export enum Dialects {
-  postgres = "postgres",
-  mysql = "mysql",
-  sqlite = "sqlite",
-  mariadb = "mariadb",
+export interface HTTPHeader {
+  key: string;
+  value: string;
 }

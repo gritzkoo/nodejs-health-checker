@@ -1,10 +1,15 @@
-import { HealthcheckerDetailedCheck, HealthcheckerSimpleCheck } from "../../src/healthchecker/healthchecker";
+import { HealthChecker } from "../../src/index";
 import { scenarios } from "./healthchecker.mocks";
 
 // all this tests must be exec in docker context
 describe("Testing the main funcionalyties", () => {
   it("should test simple return a fully functional", () => {
-    const result = HealthcheckerSimpleCheck();
+    const checker = new HealthChecker({
+      name: 'tester',
+      version: 'v1.0.0',
+      integrations: []
+    })
+    const result = checker.liveness();
     expect(result).toMatchObject({ status: "fully functional" });
   });
 
@@ -21,14 +26,17 @@ describe("Testing the main funcionalyties", () => {
     ["should memcached be tested and return: falsy", scenarios.memcachedFalsy], // lib memcache can't handle falsy in test mode,
     ["should database be tested and return: truthy", scenarios.databaseIntegrationTruthy],
     ["should database be tested and return: falsy", scenarios.databaseIntegrationFalsy],
-    ["should custom function be tested and return: truthy", scenarios.customIntegrationTruthy],
-    ["should custom function be tested and return: falsy", scenarios.customIntegrationFalsy],
-    ["should custom function with missing function should return: falsy", scenarios.customIntegrationMissingFunction],
-    ["should custom function throws error should return: falsy", scenarios.customIntegrationFunctionThrows],
+    // ["should custom function be tested and return: truthy", scenarios.customIntegrationTruthy],
+    // ["should custom function be tested and return: falsy", scenarios.customIntegrationFalsy],
+    // ["should custom function with missing function should return: falsy", scenarios.customIntegrationMissingFunction],
+    // ["should custom function throws error should return: falsy", scenarios.customIntegrationFunctionThrows],
   ])("Test: %s ", async (_, scenario) => {
-    const result = await HealthcheckerDetailedCheck({
-      integrations: [scenario.config],
-    });
+    const checker = new HealthChecker({
+      name: 'tester',
+      version: 'v1.0.0',
+      integrations: [scenario.config]
+    })
+    const result = await checker.readiness();
     expect(result.status).toBe(scenario.expected);
   });
 });
