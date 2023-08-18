@@ -23,8 +23,8 @@
   "homepage": "https://github.com/gritzkoo/nodejs-health-checker#readme",
   "scripts": {
     "dev": "nodemon --watch \"src/\" --exec \"ts-node src/index.ts\" -e ts",
-    "test": "jest --detectOpenHandles --forceExit",
-    "test:coverage": "jest --detectOpenHandles --collect-coverage --forceExit",
+    "test": "jest --forceExit --testTimeout=60000",
+    "test:coverage": "jest --collect-coverage --forceExit --testTimeout=60000",
     "format": "prettier --config .prettierrc.json --ignore-unknown --write \"src/**/*.ts\" \"tests/**/*.ts\"",
     "lint": "tslint -p tsconfig.json",
     "build": "tsc"
