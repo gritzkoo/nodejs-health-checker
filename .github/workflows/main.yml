@@ -4,68 +4,55 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        # keep the versions below up to date with https://nodejs.org/en/about/releases/
-        # use only up to lts
-        node-version: [20.x]
-        # redis-version: [6]
-    services:
-      postgresql:
-        image: postgres
-        env:
-          POSTGRES_PASSWORD: root
-        ports:
-          - 5432:5432
-      dynamodb:
-        image: amazon/dynamodb-local
-        ports:
-          - "8000:8000"
-      memcache:
-        image: memcached:1.4.21
-        ports:
-          - 11211:11211
-      redis:
-        image: redis
-        ports:
-          - 6379:6379
+    # strategy:
+    #   matrix:
+    #     # keep the versions below up to date with https://nodejs.org/en/about/releases/
+    #     # use only up to lts
+    #     node-version: [20.x]
+    #     # redis-version: [6]
+    # services:
+    #   postgresql:
+    #     image: postgres
+    #     env:
+    #       POSTGRES_PASSWORD: root
+    #     ports:
+    #       - 5432:5432
+    #   dynamodb:
+    #     image: amazon/dynamodb-local
+    #     ports:
+    #       - "8000:8000"
+    #   memcache:
+    #     image: memcached:1.4.21
+    #     ports:
+    #       - 11211:11211
+    #   redis:
+    #     image: redis
+    #     ports:
+    #       - 6379:6379
 
     steps:
       - name: Git checkout
         uses: actions/checkout@v2
-      # - name: Start Redis
-      #   uses: supercharge/redis-github-action@1.1.0
+      # - name: Configure Node.js ${{ matrix.node-version }}
+      #   uses: actions/setup-node@v1
       #   with:
-      #     redis-version: ${{ matrix.redis-version }}
-      # - name: Sets up a Memcached server
-      #   uses: niden/actions-memcached@v7
-      # - name: Setup DynamoDB Local
-      #   uses: rrainn/dynamodb-action@v3.0.0
+      #     node-version: ${{ matrix.node-version }}
+      # - name: Cache node_modules
+      #   id: cache-modules
+      #   uses: actions/cache@v2
       #   with:
-      #     port: 8000
-      #     cors: "*"
-      - name: Configure Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v1
-        with:
-          node-version: ${{ matrix.node-version }}
-      - name: Cache node_modules
-        id: cache-modules
-        uses: actions/cache@v2
-        with:
-          path: node_modules
-          key: ${{ matrix.node-version }}-${{ runner.OS }}-build-${{ hashFiles('package.json') }}
-      - name: Install npm in version ${{ matrix.node-version }}
-        if: steps.cache-modules.outputs.cache-hit != 'true'
-        run: npm install --legacy-peer-deps
-      - name: Run test in version ${{ matrix.node-version }}
-        run: npm run test:coverage
-        env:
-          CI: true
-          REDIS_HOST: redis
-          MEMCACHED_HOST: memcache
-          WEB_HOST: https://github.com/status
-          DYNAMO_HOST: http://dynamodb
-          DATABASE_HOST: postgresql
+      #     path: node_modules
+      #     key: ${{ matrix.node-version }}-${{ runner.OS }}-build-${{ hashFiles('package.json') }}
+      # - name: Install npm in version ${{ matrix.node-version }}
+      #   if: steps.cache-modules.outputs.cache-hit != 'true'
+      #   run: npm install --legacy-peer-deps
+      # - name: Run test in version ${{ matrix.node-version }}
+      #   run: npm run test:coverage
+      #   env:
+      #     CI: true
+      - name: use docker to test
+        run: |
+          docker compose run --rm test bash -c 'npm install --legacy-peer-deps && npm run test:coverage'
       - name: upload coverage artifact v${{ matrix.node-version }}
         uses: actions/upload-artifact@v2
         with:
