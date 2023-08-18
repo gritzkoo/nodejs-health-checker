@@ -25,7 +25,7 @@ services:
   #the services below is a short hand to use npm in docker context
   test:
     <<: *default
-    command: npm run test
+    command: npm run test:coverage
     ports: []
 
   lint:
