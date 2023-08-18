@@ -61,6 +61,11 @@ jobs:
         run: npm run test:coverage
         env:
           CI: true
+          REDIS_HOST: redis
+          MEMCACHED_HOST: memcache
+          WEB_HOST: https://github.com/status
+          DYNAMO_HOST: http://dynamodb
+          DATABASE_HOST: postgresql
       - name: upload coverage artifact v${{ matrix.node-version }}
         uses: actions/upload-artifact@v2
         with:
