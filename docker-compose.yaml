@@ -54,6 +54,8 @@ services:
 
   dynamodb:
     image: amazon/dynamodb-local
+    environment:
+      AWS_ACCESS_KEY_ID: test
     # ports:
     #   - "8000:8000"
 

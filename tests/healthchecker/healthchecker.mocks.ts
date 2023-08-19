@@ -97,8 +97,8 @@ export const scenarios: HealthCheckDetailedTestScenario = {
       port: 8000,
       Aws: {
         region: "us-east-1",
-        access_key_id: "",
-        secret_access_key: "",
+        access_key_id: "test",
+        secret_access_key: "test",
       },
     },
   },
