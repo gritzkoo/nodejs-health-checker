@@ -5,7 +5,6 @@
 ![npm](https://img.shields.io/npm/dt/nodejs-health-checker?style=for-the-badge)<br>
 [![npm version](https://badge.fury.io/js/nodejs-health-checker.svg)](https://badge.fury.io/js/nodejs-health-checker)
 ![test](https://github.com/gritzkoo/nodejs-health-checker/workflows/test/badge.svg?branch=master)
-![GitHub Workflow Status (event)](https://img.shields.io/github/workflow/status/gritzkoo/nodejs-health-checker/test)
 [![Coverage Status](https://coveralls.io/repos/github/gritzkoo/nodejs-health-checker/badge.svg?branch=master)](https://coveralls.io/github/gritzkoo/nodejs-health-checker?branch=master)
 [![License Status](https://img.shields.io/github/license/gritzkoo/nodejs-health-checker)](https://img.shields.io/github/license/gritzkoo/nodejs-health-checker)
 [![Issues Status](https://img.shields.io/github/issues/gritzkoo/nodejs-health-checker)](https://img.shields.io/github/issues/gritzkoo/nodejs-health-checker)
