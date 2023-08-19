@@ -3,7 +3,8 @@ version: "3.7"
 services:
   app:
     &default
-    image: node:20
+    image: nhc:v1
+    build: .
     working_dir: /app/
     command: npm run dev
     environment:
@@ -12,6 +13,7 @@ services:
       WEB_HOST: https://github.com/status
       DYNAMO_HOST: http://dynamodb
       DATABASE_HOST: postgresql
+      PYTHON: python3
     volumes:
       - .:/app
     ports:
