@@ -27,8 +27,10 @@ describe("Testing the main funcionalyties", () => {
     ["should custom function throws error should return: falsy", scenarios.customIntegrationFunctionThrows],
   ])("Test: %s ", async (_, scenario) => {
     const result = await HealthcheckerDetailedCheck({
+      name: _,
       integrations: [scenario.config],
     });
+    console.debug(JSON.stringify(result, undefined, 2));
     expect(result.status).toBe(scenario.expected);
   });
 });

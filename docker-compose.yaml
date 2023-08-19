@@ -44,22 +44,22 @@ services:
 
   redis:
     image: redis
-    ports:
-      - 6379:6379
+    # ports:
+    #   - 6379:6379
 
   memcache:
     image: memcached:1.4.21
-    ports:
-      - 11211:11211
+    # ports:
+    #   - 11211:11211
 
   dynamodb:
     image: amazon/dynamodb-local
-    ports:
-      - "8000:8000"
+    # ports:
+    #   - "8000:8000"
 
   postgresql:
     image: postgres
     environment:
       POSTGRES_PASSWORD: root
-    ports:
-      - 5432:5432
+    # ports:
+    #   - 5432:5432
