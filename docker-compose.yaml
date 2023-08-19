@@ -3,7 +3,8 @@ version: "3.7"
 services:
   app:
     &default
-    image: node:18.14.1
+    image: nhc:v1
+    build: .
     working_dir: /app/
     command: npm run dev
     environment:
@@ -12,6 +13,7 @@ services:
       WEB_HOST: https://github.com/status
       DYNAMO_HOST: http://dynamodb
       DATABASE_HOST: postgresql
+      PYTHON: python3
     volumes:
       - .:/app
     ports:
@@ -25,7 +27,7 @@ services:
   #the services below is a short hand to use npm in docker context
   test:
     <<: *default
-    command: npm run test
+    command: npm run test:coverage
     ports: []
 
   lint:
@@ -42,22 +44,24 @@ services:
 
   redis:
     image: redis
-    ports:
-      - 6379:6379
+    # ports:
+    #   - 6379:6379
 
   memcache:
     image: memcached:1.4.21
-    ports:
-      - 11211:11211
+    # ports:
+    #   - 11211:11211
 
   dynamodb:
     image: amazon/dynamodb-local
-    ports:
-      - "8000:8000"
+    environment:
+      AWS_ACCESS_KEY_ID: test
+    # ports:
+    #   - "8000:8000"
 
   postgresql:
     image: postgres
     environment:
       POSTGRES_PASSWORD: root
-    ports:
-      - 5432:5432
+    # ports:
+    #   - 5432:5432

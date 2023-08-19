@@ -6,7 +6,7 @@ module.exports = {
     "<rootDir>/src/**/*.ts",
     "!src/server.ts",
     "!src/index.ts",
-    "!src/evns.ts",
+    "!src/envs.ts",
     "!src/interfaces/**/*"
   ],
   coverageDirectory: "coverage",

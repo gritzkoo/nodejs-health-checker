@@ -4,64 +4,24 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        # keep the versions below up to date with https://nodejs.org/en/about/releases/
-        # use only up to lts
-        node-version: [14.x, 16.x]
-        redis-version: [6]
-    services:
-      postgresql:
-        image: postgres
-        env:
-          POSTGRES_PASSWORD: root
-        ports:
-          - 5432:5432
-
     steps:
       - name: Git checkout
         uses: actions/checkout@v2
-
-      - name: Setup DynamoDB Local
-        uses: rrainn/dynamodb-action@v2.0.0
-        with:
-          port: 8000
-          cors: "*"
-
-      - name: Configure Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v1
-        with:
-          node-version: ${{ matrix.node-version }}
-
-      - name: Start Redis
-        uses: supercharge/redis-github-action@1.1.0
-        with:
-          redis-version: ${{ matrix.redis-version }}
-
-      - name: Sets up a Memcached server
-        uses: niden/actions-memcached@v7
-
-      - name: Cache node_modules
-        id: cache-modules
-        uses: actions/cache@v2
-        with:
-          path: node_modules
-          key: ${{ matrix.node-version }}-${{ runner.OS }}-build-${{ hashFiles('package.json') }}
-
-      - name: Install npm in version ${{ matrix.node-version }}
-        if: steps.cache-modules.outputs.cache-hit != 'true'
-        run: npm install --legacy-peer-deps
-
-      - name: Run test in version ${{ matrix.node-version }}
-        run: npm run test:coverage
-        env:
-          CI: true
-
-      - name: upload coverage artifact v${{ matrix.node-version }}
+      - name: use docker to test
+        run: |
+          docker compose run --rm test bash -c 'npm install --legacy-peer-deps --python=python3 && npm run test:coverage && npm run build --python=python3'
+      - name: upload coverage artifact
         uses: actions/upload-artifact@v2
         with:
-          name: coveragev-${{ matrix.node-version }}
+          name: coverage
           path: coverage/lcov.info
+          if-no-files-found: error
+      - name: Generate dist artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: dist-folder
+          path: dist/**/*
+          if-no-files-found: error
 
   coverage:
     needs: test
@@ -70,44 +30,12 @@ jobs:
       - uses: actions/checkout@v2
       - uses: actions/download-artifact@v2
         with:
-          name: coveragev-16.x
+          name: coverage
           path: coverage
       - name: Generate coverage in coverall
         uses: coverallsapp/github-action@master
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-
-  build:
-    name: Build application
-    needs:
-      - test
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
-        with:
-          node-version: "12"
-
-      - name: Cache node_modules
-        id: cache-modules
-        uses: actions/cache@v2
-        with:
-          path: node_modules
-          key: 12.x-${{ runner.OS }}-build-${{ hashFiles('package.json') }}
-
-      - name: Install NPM
-        if: steps.cache-modules.outputs.cache-hit != 'true'
-        run: npm install
-
-      - name: Build application
-        run: npm run build
-
-      - name: Generate dist artifact v${{ matrix.node-version }}
-        uses: actions/upload-artifact@v2
-        with:
-          name: dist-folder
-          path: dist/**/*
-          if-no-files-found: error
 
   validate:
     name: check version is valid to release
@@ -116,7 +44,7 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
-          node-version: 16
+          node-version: 20
       - name: Validate if can be published
         run: |
           REVIEW_JS=`npm view --json`
@@ -135,7 +63,7 @@ jobs:
   publish:
     name: NPM package publish
     needs:
-      - build
+      - test
       - validate
     runs-on: ubuntu-latest
     if: github.event_name == 'push' && github.ref == 'refs/heads/master'
@@ -143,7 +71,7 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
-          node-version: "16.x"
+          node-version: "20.x"
           registry-url: "https://registry.npmjs.org"
       - uses: actions/download-artifact@v2
         with:
@@ -159,4 +87,3 @@ jobs:
           NOTES=`git show -s --format="%s%n%n%b"`
           echo ${{ secrets.GITHUB_TOKEN }} | gh auth login --with-token
           gh release create "v${NEW_TAG}" --title "v${NEW_TAG}" --notes "${NOTES}"
-
