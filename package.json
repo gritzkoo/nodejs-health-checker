@@ -59,7 +59,7 @@
     "pg-hstore": "^2.3.4",
     "redis": "^3.1.2",
     "sequelize": "^6.28.1",
-    "sqlite3": "^4.2.0"
+    "sqlite3": "^5.1.7"
   },
   "files": [
     "dist/**/*"
