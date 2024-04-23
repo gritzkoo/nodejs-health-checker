@@ -1,6 +1,6 @@
 {
   "name": "nodejs-health-checker",
-  "version": "1.6.11",
+  "version": "1.6.12",
   "description": "Simple Nodejs package to simplify applications based in Node, to trace the healthy of the pods",
   "author": "Gritzko D. Kleiner <gritzkoo@hotmail.com>",
   "license": "MIT",
@@ -59,7 +59,7 @@
     "pg-hstore": "^2.3.4",
     "redis": "^3.1.2",
     "sequelize": "^6.28.1",
-    "sqlite3": "^4.2.0"
+    "sqlite3": "^5.1.7"
   },
   "files": [
     "dist/**/*"
