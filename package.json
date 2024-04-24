@@ -1,6 +1,6 @@
 {
   "name": "nodejs-health-checker",
-  "version": "1.6.13",
+  "version": "1.6.14",
   "description": "Simple Nodejs package to simplify applications based in Node, to trace the healthy of the pods",
   "author": "Gritzko D. Kleiner <gritzkoo@hotmail.com>",
   "license": "MIT",
