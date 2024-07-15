@@ -1,5 +1,3 @@
-version: "3.7"
-
 services:
   app:
     &default
@@ -48,7 +46,7 @@ services:
     #   - 6379:6379
 
   memcache:
-    image: memcached:1.4.21
+    image: memcached:latest
     # ports:
     #   - 11211:11211
 
