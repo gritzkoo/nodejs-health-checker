@@ -73,7 +73,7 @@ export const scenarios: HealthCheckDetailedTestScenario = {
     config: {
       name: "jest-test-web",
       type: HealthTypes.Web,
-      host: `${WEB_HOST}sssssssss`,
+      host: `: // invalid`,
       timeout: 4000,
       headers: [{ key: "Accept", value: "application/json" }],
     },
