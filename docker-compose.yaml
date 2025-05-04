@@ -1,7 +1,7 @@
 services:
   app:
     &default
-    image: nhc:v1
+    image: nhc:v2
     build: .
     working_dir: /app/
     command: npm run dev
