@@ -58,7 +58,7 @@
     "pg": "^8.9.0",
     "pg-hstore": "^2.3.4",
     "redis": "^3.1.2",
-    "sequelize": "^6.28.1",
+    "sequelize": "^6.37.7",
     "sqlite3": "^5.1.7"
   },
   "files": [
