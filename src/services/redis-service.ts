@@ -17,10 +17,7 @@ export async function checkRedisClient(config: IntegrationConfig): Promise<HTTPC
     client = createClient(opt);
     await client.connect();
     const result = await client.ping();
-    return {
-      status: result === "PONG",
-      error: result !== "PONG" ? result : undefined,
-    };
+    return { status: result === "PONG" };
   } catch (error) {
     return {
       status: false,

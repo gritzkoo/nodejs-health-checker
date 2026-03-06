@@ -1,4 +1,4 @@
-import { Defaults, HTTPChecker, IntegrationConfig } from "../interfaces/types";
+import { HTTPChecker, IntegrationConfig } from "../interfaces/types";
 
 export async function checkWebIntegration(config: IntegrationConfig): Promise<HTTPChecker> {
   const controller = new AbortController();
@@ -10,10 +10,9 @@ export async function checkWebIntegration(config: IntegrationConfig): Promise<HT
       return acc;
     }, {} as Record<string, string>);
 
-    const timeoutMs = config.timeout || Defaults.WebTimeout;
     timeoutId = setTimeout(() => {
       controller.abort();
-    }, timeoutMs);
+    }, config.timeout);
 
     const response = await fetch(config.host, {
       headers,
@@ -26,7 +25,6 @@ export async function checkWebIntegration(config: IntegrationConfig): Promise<HT
     if (response.body) {
       response.body.cancel();
     }
-
     return {
       status: response.status === 200,
       error: response.status !== 200 ? { http_status: response.status } : undefined,

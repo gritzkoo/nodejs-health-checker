@@ -22,6 +22,10 @@ ___
 >Made with [contributors-img](https://contrib.rocks).
 ___
 
+[CHANGELOG](./CHANGELOG.md)
+
+___
+
 This is a Node package that allows you to track the health of your application, providing two ways of checking:
 
 *__Simple__*: will respond to a JSON as below and that allows you to check if your application is online and responding without checking any kind of integration.
@@ -175,75 +179,52 @@ export default server;
 And then, you could call these endpoints manually to see your application health, but, if you are using modern Kubernetes deployment, you can config your chart to check your application with the setup below. There is an [Example](https://runkit.com/gritzkoo/618d325cb041300008eb7bfe) on runkit too.
 
 ```yaml
-apiVersion: v1
-kind: Pod
+apiVersion: apps/v1
+kind: Deployment
 metadata:
-  labels:
-    test: liveness
-  name: liveness-http
+  name: your-app-name
+  namespace: your-app-namespace
 spec:
-  containers:
-  - name: liveness
-    image: 'node' #your application image
-    args:
-    - /server
-    livenessProbe:
-      httpGet:
-        path: /health-check/liveness
-        port: 80
-        httpHeaders:
-        - name: Custom-Header
-          value: Awesome
-      initialDelaySeconds: 3
-      periodSeconds: 3
-  - name: readiness
-    image: 'node' #your application image
-    args:
-    - /server
-    readinessProbe:
-      httpGet:
-        path: /health-check/readiness
-        port: 80
-        httpHeaders:
-        - name: Custom-Header
-          value: Awesome
-      initialDelaySeconds: 3
-      periodSeconds: 3
-```
-
-### Import using require
-
-If your application needs to use the `require` instead of ECMAScript, you should import on this way:
-
-```typescript
-const express = require('express');
-const {
-    HealthcheckerSimpleCheck,
-    HealthcheckerDetailedCheck
-} = require("nodejs-health-checker/dist/healthchecker/healthchecker");
-const { HealthTypes } = require("nodejs-health-checker/dist/interfaces/types");
-const server = express();
-server.get('/', (req, res) => {
-    res.json({ status: "I'm alive!" });
-})
-server.get('/health-check/liveness', (req, res) => {
-    res.json(HealthcheckerSimpleCheck())
-})
-server.get('/health-check/readiness', async (req, res) => {
-    let result = await HealthcheckerDetailedCheck({
-        name: 'example',
-        version: 'v1.0.0',
-        integrations: [
-            {
-                type: HealthTypes.Web,
-                name: 'A simple api integration check',
-                host: 'https://github.com/status'
-            }
-        ]
-    });
-    res.json(result);
-})
-server.listen(3000, () => {
-    console.log('server started at port 3000')
-})
+  replicas: 2
+  selector:
+    matchLabels:
+      app: your-app-name
+  template:
+    metadata:
+      labels:
+        app: your-app-name
+    spec:
+      containers:
+      - name: your-app
+        image: your-app:latest
+        ports:
+        - containerPort: 3000
+        env:
+        - name: NODE_ENV
+          value: "production"
+        livenessProbe:
+          httpGet:
+            path: /health-check/liveness
+            port: 3000
+            scheme: HTTP
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /health-check/readiness
+            port: 3000
+            scheme: HTTP
+          initialDelaySeconds: 10
+          periodSeconds: 5
+          timeoutSeconds: 3
+          failureThreshold: 3
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "100m"
+          limits:
+            memory: "256Mi"
+            cpu: "200m"
 ```

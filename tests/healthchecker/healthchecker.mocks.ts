@@ -27,7 +27,7 @@ export const scenarios: HealthCheckDetailedTestScenario = {
   redisFalsy: {
     expected: false,
     config: {
-      name: "jest-test-redis",
+      name: "jest-test-redis using password",
       type: HealthTypes.Redis,
       host: REDIS_HOST,
       port: 100,
@@ -78,8 +78,7 @@ export const scenarios: HealthCheckDetailedTestScenario = {
     config: {
       name: "jest-test-web",
       type: HealthTypes.Web,
-      host: ": // invalid",
-      timeout: 4000,
+      host: "https://tools-httpstatus.pickup-services.com/404",
       headers: [{ key: "Accept", value: "application/json" }],
     },
   },
@@ -88,7 +87,7 @@ export const scenarios: HealthCheckDetailedTestScenario = {
     config: {
       name: "jest-test-web",
       type: HealthTypes.Web,
-      host: `${WEB_HOST}sssssssss`,
+      host: "https://tools-httpstatus.pickup-services.com/404",
       timeout: 4,
       headers: [{ key: "Accept", value: "application/json" }],
     },

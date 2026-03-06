@@ -1,5 +1,5 @@
 import Memcached from "memcached";
-import { Defaults, HTTPChecker, IntegrationConfig } from "../interfaces/types";
+import { HTTPChecker, IntegrationConfig } from "../interfaces/types";
 
 /**
  * Perform a memcache instance config and call to check
@@ -24,16 +24,7 @@ export function checkMemcachedClient(config: IntegrationConfig): Promise<HTTPChe
       }
     };
 
-    const timeout = setTimeout(() => {
-      cleanup();
-      resolve({
-        status: false,
-        error: "Timeout",
-      });
-    }, config.timeout || Defaults.MemcachedTimeout);
-
     client.on("issue", (error) => {
-      clearTimeout(timeout);
       cleanup();
       resolve({
         status: false,
@@ -41,11 +32,10 @@ export function checkMemcachedClient(config: IntegrationConfig): Promise<HTTPChe
       });
     });
 
-    client.stats((error, status) => {
-      clearTimeout(timeout);
+    client.stats((error) => {
       cleanup();
       resolve({
-        status: !!status?.length,
+        status: error == undefined,
         error,
       });
     });
