@@ -23,7 +23,7 @@ export interface Integration {
   status: boolean;
   response_time: number;
   url: string;
-  error?: any;
+  error?: string | Error | object | unknown;
 }
 // Auth is a default  to map user/pass protocol
 export interface Auth {
@@ -96,7 +96,7 @@ export enum Defaults {
 // HTTPChecker used to return in all services protocol
 export interface HTTPChecker {
   status: boolean;
-  error?: any;
+  error?: string | Error | object | unknown;
 }
 // Dialects accepted
 export enum Dialects {

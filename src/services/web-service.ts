@@ -1,26 +1,44 @@
-import fetch from "node-fetch";
-import { HTTPChecker, IntegrationConfig } from "../interfaces/types";
+import { Defaults, HTTPChecker, IntegrationConfig } from "../interfaces/types";
 
 export async function checkWebIntegration(config: IntegrationConfig): Promise<HTTPChecker> {
-  return new Promise((resolve, _) => {
-    const headers = config.headers?.map((item) => {
-      return [item.key, item.value];
-    });
-    fetch(config.host, {
-      timeout: config.timeout,
+  const controller = new AbortController();
+  let timeoutId: ReturnType<typeof setTimeout> | undefined;
+
+  try {
+    const headers = config.headers?.reduce((acc, item) => {
+      acc[item.key] = item.value;
+      return acc;
+    }, {} as Record<string, string>);
+
+    const timeoutMs = config.timeout || Defaults.WebTimeout;
+    timeoutId = setTimeout(() => {
+      controller.abort();
+    }, timeoutMs);
+
+    const response = await fetch(config.host, {
       headers,
-    })
-      .then((response) => {
-        resolve({
-          status: response.status === 200,
-          error: response.status !== 200 ? { http_status: response.status } : undefined,
-        });
-      })
-      .catch((error) => {
-        resolve({
-          status: false,
-          error,
-        });
-      });
-  });
+      signal: controller.signal,
+      // Force connection close
+      keepalive: false,
+    });
+
+    // Force close the response body
+    if (response.body) {
+      response.body.cancel();
+    }
+
+    return {
+      status: response.status === 200,
+      error: response.status !== 200 ? { http_status: response.status } : undefined,
+    };
+  } catch (error) {
+    return {
+      status: false,
+      error,
+    };
+  } finally {
+    if (timeoutId) {
+      clearTimeout(timeoutId);
+    }
+  }
 }

@@ -29,6 +29,7 @@ describe("Testing the main funcionalyties", () => {
     const result = await HealthcheckerDetailedCheck({
       integrations: [scenario.config],
     });
+    console.debug(result);
     expect(result.status).toBe(scenario.expected);
   });
 });
