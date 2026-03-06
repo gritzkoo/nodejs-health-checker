@@ -16,6 +16,7 @@ module.exports = {
     "<rootDir>/tests/**/*.(spec|test).ts"
   ],
   verbose: true,
+  silent: false,
   transform: {
     "^.+\\.(ts|tsx)$": "ts-jest"
   },
