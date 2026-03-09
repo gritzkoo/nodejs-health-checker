@@ -1,5 +1,5 @@
 import { Sequelize } from "sequelize";
-import { HTTPChecker, IntegrationConfig } from "../interfaces/types";
+import { HTTPChecker, IntegrationConfig } from "../interfaces/types.js";
 
 export async function checkDatabaseClient(config: IntegrationConfig): Promise<HTTPChecker> {
   const { dbName, dbUser, dbPwd, dbDialect, dbPort, host } = config;

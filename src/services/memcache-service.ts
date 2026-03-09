@@ -1,5 +1,5 @@
 import Memcached from "memcached";
-import { HTTPChecker, IntegrationConfig } from "../interfaces/types";
+import { HTTPChecker, IntegrationConfig } from "../interfaces/types.js";
 
 /**
  * Perform a memcache instance config and call to check

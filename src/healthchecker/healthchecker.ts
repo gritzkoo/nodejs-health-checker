@@ -7,12 +7,12 @@ import {
   HealthTypes,
   Integration,
   IntegrationConfig,
-} from "../interfaces/types";
-import { checkDatabaseClient } from "../services/database-service";
-import { checkDynamodbClient } from "../services/dynamodb-service";
-import { checkMemcachedClient } from "../services/memcache-service";
-import { checkRedisClient } from "../services/redis-service";
-import { checkWebIntegration } from "../services/web-service";
+} from "../interfaces/types.js";
+import { checkDatabaseClient } from "../services/database-service.js";
+import { checkDynamodbClient } from "../services/dynamodb-service.js";
+import { checkMemcachedClient } from "../services/memcache-service.js";
+import { checkRedisClient } from "../services/redis-service.js";
+import { checkWebIntegration } from "../services/web-service.js";
 
 /**
  * HealthcheckerSimpleCheck perform a simple application check

@@ -101,9 +101,10 @@ Example using Nodejs + Express
 import express from "express";
 import {
   HealthcheckerDetailedCheck,
-  HealthcheckerSimpleCheck
-} from "./healthchecker/healthchecker";
-import { Dialects, HealthTypes } from "./interfaces/types";
+  HealthcheckerSimpleCheck,
+  Dialects,
+  HealthTypes
+} from "nodejs-health-checker";
 
 const server = express();
 
@@ -176,7 +177,7 @@ server.get("/health-check/readiness", async (_, res) => {
 export default server;
 ```
 
-And then, you could call these endpoints manually to see your application health, but, if you are using modern Kubernetes deployment, you can config your chart to check your application with the setup below. There is an [Example](https://runkit.com/gritzkoo/618d325cb041300008eb7bfe) on runkit too.
+And then, you could call these endpoints manually to see your application health, but, if you are using modern Kubernetes deployment, you can config your chart to check your application with the setup below.
 
 ```yaml
 apiVersion: apps/v1

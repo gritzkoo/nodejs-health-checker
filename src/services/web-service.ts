@@ -1,4 +1,4 @@
-import { HTTPChecker, IntegrationConfig } from "../interfaces/types";
+import { HTTPChecker, IntegrationConfig } from "../interfaces/types.js";
 
 export async function checkWebIntegration(config: IntegrationConfig): Promise<HTTPChecker> {
   const controller = new AbortController();

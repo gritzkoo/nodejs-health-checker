@@ -1,5 +1,5 @@
 import { createClient, RedisClientOptions } from "redis";
-import { Defaults, HTTPChecker, IntegrationConfig } from "../interfaces/types";
+import { Defaults, HTTPChecker, IntegrationConfig } from "../interfaces/types.js";
 
 export async function checkRedisClient(config: IntegrationConfig): Promise<HTTPChecker> {
   let client;

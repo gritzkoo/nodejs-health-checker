@@ -1,5 +1,5 @@
 import { DynamoDBClient, ListTablesCommand } from "@aws-sdk/client-dynamodb";
-import { HTTPChecker, IntegrationConfig } from "../interfaces/types";
+import { HTTPChecker, IntegrationConfig } from "../interfaces/types.js";
 
 export async function checkDynamodbClient(config: IntegrationConfig): Promise<HTTPChecker> {
   const client = new DynamoDBClient({
