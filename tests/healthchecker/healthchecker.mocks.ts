@@ -1,5 +1,10 @@
 import { Dialects, HealthTypes, IntegrationConfig } from "../../src/interfaces/types";
-import { REDIS_HOST, MEMCACHED_HOST, WEB_HOST, DYNAMO_HOST, DATABASE_HOST } from "../../src/envs";
+
+const REDIS_HOST = process.env.REDIS_HOST || "localhost";
+const MEMCACHED_HOST = process.env.MEMCACHED_HOST || "localhost";
+const WEB_HOST = process.env.WEB_HOST || "https://github.com/status";
+const DYNAMO_HOST = process.env.DYNAMO_HOST || "http://localhost";
+const DATABASE_HOST = process.env.DATABASE_HOST || "localhost";
 
 export interface HealthCheckDetailedTestScenario {
   [key: string]: HealthCheckDetailedTestConfig;
@@ -22,7 +27,7 @@ export const scenarios: HealthCheckDetailedTestScenario = {
   redisFalsy: {
     expected: false,
     config: {
-      name: "jest-test-redis",
+      name: "jest-test-redis using password",
       type: HealthTypes.Redis,
       host: REDIS_HOST,
       port: 100,
@@ -73,8 +78,7 @@ export const scenarios: HealthCheckDetailedTestScenario = {
     config: {
       name: "jest-test-web",
       type: HealthTypes.Web,
-      host: `: // invalid`,
-      timeout: 4000,
+      host: "https://tools-httpstatus.pickup-services.com/404",
       headers: [{ key: "Accept", value: "application/json" }],
     },
   },
@@ -83,7 +87,7 @@ export const scenarios: HealthCheckDetailedTestScenario = {
     config: {
       name: "jest-test-web",
       type: HealthTypes.Web,
-      host: `${WEB_HOST}sssssssss`,
+      host: "https://tools-httpstatus.pickup-services.com/404",
       timeout: 4,
       headers: [{ key: "Accept", value: "application/json" }],
     },
@@ -178,6 +182,14 @@ export const scenarios: HealthCheckDetailedTestScenario = {
       customCheckerFunction: () => {
         throw new Error("Help!");
       },
+    },
+  },
+  unknownIntegrationType: {
+    expected: false,
+    config: {
+      type: "Unknown" as HealthTypes,
+      name: "unknown-integration-type",
+      host: "my-custom-integration-host",
     },
   },
 };

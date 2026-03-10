@@ -1,4 +1,4 @@
-import { Dialect } from "sequelize/types";
+import { Dialect } from "sequelize";
 
 /**
  * ApplicationHealth used to check all application integrations
@@ -23,7 +23,7 @@ export interface Integration {
   status: boolean;
   response_time: number;
   url: string;
-  error?: any;
+  error?: string | Error | object | unknown;
 }
 // Auth is a default  to map user/pass protocol
 export interface Auth {
@@ -83,6 +83,7 @@ export enum HealthIntegration {
   DynamoDbIntegration = "AWS Dynamo DB",
   DatabaseIntegration = "Database integration",
   CustomIntegration = "Custom integration",
+  UnknownIntegration = "Unknown or missing integration type",
 }
 // DefaultTimeOuts define all integration default timeouts
 export enum Defaults {
@@ -96,7 +97,7 @@ export enum Defaults {
 // HTTPChecker used to return in all services protocol
 export interface HTTPChecker {
   status: boolean;
-  error?: any;
+  error?: string | Error | object | unknown;
 }
 // Dialects accepted
 export enum Dialects {

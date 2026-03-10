@@ -7,12 +7,12 @@ import {
   HealthTypes,
   Integration,
   IntegrationConfig,
-} from "../interfaces/types";
-import { checkDatabaseClient } from "../services/database-service";
-import { checkDynamodbClient } from "../services/dynamodb-service";
-import { checkMemcachedClient } from "../services/memcache-service";
-import { checkRedisClient } from "../services/redis-service";
-import { checkWebIntegration } from "../services/web-service";
+} from "../interfaces/types.js";
+import { checkDatabaseClient } from "../services/database-service.js";
+import { checkDynamodbClient } from "../services/dynamodb-service.js";
+import { checkMemcachedClient } from "../services/memcache-service.js";
+import { checkRedisClient } from "../services/redis-service.js";
+import { checkWebIntegration } from "../services/web-service.js";
 
 /**
  * HealthcheckerSimpleCheck perform a simple application check
@@ -52,6 +52,8 @@ export async function HealthcheckerDetailedCheck(config: ApplicationConfig): Pro
       case HealthTypes.Custom:
         promisesList.push(customCheck(item));
         break;
+      default:
+        promisesList.push(unknowType(item));
     }
   });
   const results = await Promise.all(promisesList);
@@ -175,6 +177,22 @@ async function customCheck(config: IntegrationConfig): Promise<Integration> {
       error,
     };
   }
+}
+
+async function unknowType(config: IntegrationConfig): Promise<Integration> {
+  const {
+    name, type, host, port,
+  } = config;
+  return new Promise((resolve) => {
+    resolve({
+      name: name,
+      kind: HealthIntegration.UnknownIntegration,
+      status: false,
+      error: `Unknown integration type: ${type}`,
+      response_time: 0,
+      url: `host: ${host} port: ${port}`,
+    });
+  });
 }
 
 /**

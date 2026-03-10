@@ -2,7 +2,7 @@ import { HealthcheckerDetailedCheck, HealthcheckerSimpleCheck } from "../../src/
 import { scenarios } from "./healthchecker.mocks";
 
 // all this tests must be exec in docker context
-describe("Testing the main funcionalyties", () => {
+describe("Testing the main functionalities", () => {
   it("should test simple return a fully functional", () => {
     const result = HealthcheckerSimpleCheck();
     expect(result).toMatchObject({ status: "fully functional" });
@@ -25,6 +25,7 @@ describe("Testing the main funcionalyties", () => {
     ["should custom function be tested and return: falsy", scenarios.customIntegrationFalsy],
     ["should custom function with missing function should return: falsy", scenarios.customIntegrationMissingFunction],
     ["should custom function throws error should return: falsy", scenarios.customIntegrationFunctionThrows],
+    ["should unknown type integration return: falsy", scenarios.unknownIntegrationType],
   ])("Test: %s ", async (_, scenario) => {
     const result = await HealthcheckerDetailedCheck({
       integrations: [scenario.config],
@@ -32,3 +33,4 @@ describe("Testing the main funcionalyties", () => {
     expect(result.status).toBe(scenario.expected);
   });
 });
+

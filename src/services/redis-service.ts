@@ -1,28 +1,28 @@
-import { createClient } from "redis";
-import { Defaults, HTTPChecker, IntegrationConfig } from "../interfaces/types";
+import { Defaults, HTTPChecker, IntegrationConfig } from "../interfaces/types.js";
 
 export async function checkRedisClient(config: IntegrationConfig): Promise<HTTPChecker> {
-  return new Promise((resolve, _) => {
-    const client = createClient({
-      host: config.host,
-      db: config.db || 0,
+  let client;
+  try {
+    // lazy loading redis package to enable peer dependency to be opbtional
+    const { createClient } = await import("redis");
+    client = createClient({
+      socket: {
+        host: config.host,
+        port: config.port || Defaults.RedisPort,
+        timeout: config.timeout || Defaults.RedisTimeout,
+      },
+      database: config.db || Defaults.RedisDB,
       password: config.auth?.password,
-      connect_timeout: config.timeout || Defaults.RedisTimeout,
-      port: config.port || 6379,
+      username: config.auth?.user,
     });
-    client.on("error", (error: any) => {
-      client.end(true);
-      resolve({
-        status: false,
-        error,
-      });
-    });
-    client.ping((status) => {
-      client.end(true);
-      resolve({
-        status: status === null,
-        error: status !== null ? status : undefined,
-      });
-    });
-  });
+    await client.connect();
+    const result = await client.ping();
+    return { status: result === "PONG" };
+  } catch (error) {
+    return { status: false, error };
+  } finally {
+    if (client) {
+      client.destroy();
+    }
+  }
 }

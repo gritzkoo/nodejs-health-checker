@@ -1,5 +1,4 @@
-import Memcached from "memcached";
-import { HTTPChecker, IntegrationConfig } from "../interfaces/types";
+import { HTTPChecker, IntegrationConfig } from "../interfaces/types.js";
 
 /**
  * Perform a memcache instance config and call to check
@@ -7,26 +6,24 @@ import { HTTPChecker, IntegrationConfig } from "../interfaces/types";
  * @param config IntegrationConfig
  * @returns Promise<HTTPChecker>
  */
-export function checkMemcachedClient(config: IntegrationConfig): Promise<HTTPChecker> {
-  return new Promise((resolve, _) => {
-    const client = new Memcached(config.host, {
+export async function checkMemcachedClient(config: IntegrationConfig): Promise<HTTPChecker> {
+  let client;
+  try {
+    // lazy loading memcache package to enable peer dependency to be optional
+    const { default: Memcache } = await import("memcache");
+    client = new Memcache({
+      nodes:[config.host],
       timeout: config.timeout,
-      retry: 1,
-      retries: 1,
+      keepAlive: false,
     });
-    client.on("issue", (error) => {
-      client.end();
-      resolve({
-        status: false,
-        error,
-      });
-    });
-    client.stats((error, status) => {
-      client.end();
-      resolve({
-        status: !!status.length,
-        error,
-      });
-    });
-  });
+    await client.connect();
+    const result = await client.stats();
+    return {status: !!result};
+  } catch (error) {
+    return { status: false, error };
+  } finally {
+    if (client) {
+      client.disconnect();
+    }
+  }
 }
