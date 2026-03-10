@@ -83,6 +83,7 @@ export enum HealthIntegration {
   DynamoDbIntegration = "AWS Dynamo DB",
   DatabaseIntegration = "Database integration",
   CustomIntegration = "Custom integration",
+  UnknownIntegration = "Unknown or missing integration type",
 }
 // DefaultTimeOuts define all integration default timeouts
 export enum Defaults {

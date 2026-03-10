@@ -1,10 +1,10 @@
 services:
   app:
     &default
-    image: nhc:v2
+    image: nhc:v3
     build: .
     working_dir: /app/
-    command: npm run dev
+    command: npm run test:coverage
     environment:
       REDIS_HOST: redis
       MEMCACHED_HOST: memcache
@@ -14,8 +14,6 @@ services:
       PYTHON: python3
     volumes:
       - .:/app
-    ports:
-      - 8888:8888
     depends_on:
       - redis
       - memcache

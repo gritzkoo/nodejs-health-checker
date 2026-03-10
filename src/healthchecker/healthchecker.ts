@@ -52,6 +52,8 @@ export async function HealthcheckerDetailedCheck(config: ApplicationConfig): Pro
       case HealthTypes.Custom:
         promisesList.push(customCheck(item));
         break;
+      default:
+        promisesList.push(unknowType(item));
     }
   });
   const results = await Promise.all(promisesList);
@@ -175,6 +177,22 @@ async function customCheck(config: IntegrationConfig): Promise<Integration> {
       error,
     };
   }
+}
+
+async function unknowType(config: IntegrationConfig): Promise<Integration> {
+  const {
+    name, type, host, port,
+  } = config;
+  return new Promise((resolve) => {
+    resolve({
+      name: name,
+      kind: HealthIntegration.UnknownIntegration,
+      status: false,
+      error: `Unknown integration type: ${type}`,
+      response_time: 0,
+      url: `host: ${host} port: ${port}`,
+    });
+  });
 }
 
 /**

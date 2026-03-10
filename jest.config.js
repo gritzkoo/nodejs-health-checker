@@ -9,14 +9,11 @@ export default {
   moduleNameMapper: {
     "^(\\.{1,2}/.*)\\.js$": "$1",
   },
-  // old config
   clearMocks: true,
   restoreMocks: true,
   collectCoverage: true,
   collectCoverageFrom: [
     "<rootDir>/src/**/*.ts",
-    // "!src/index.ts",
-    // "!src/interfaces/**/*"
   ],
   coverageDirectory: "coverage",
   verbose: true,

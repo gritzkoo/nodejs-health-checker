@@ -1,10 +1,11 @@
-import { createClient, RedisClientOptions } from "redis";
 import { Defaults, HTTPChecker, IntegrationConfig } from "../interfaces/types.js";
 
 export async function checkRedisClient(config: IntegrationConfig): Promise<HTTPChecker> {
   let client;
   try {
-    const opt: RedisClientOptions = {
+    // lazy loading redis package to enable peer dependency to be opbtional
+    const { createClient } = await import("redis");
+    client = createClient({
       socket: {
         host: config.host,
         port: config.port || Defaults.RedisPort,
@@ -13,16 +14,12 @@ export async function checkRedisClient(config: IntegrationConfig): Promise<HTTPC
       database: config.db || Defaults.RedisDB,
       password: config.auth?.password,
       username: config.auth?.user,
-    };
-    client = createClient(opt);
+    });
     await client.connect();
     const result = await client.ping();
     return { status: result === "PONG" };
   } catch (error) {
-    return {
-      status: false,
-      error: error,
-    };
+    return { status: false, error };
   } finally {
     if (client) {
       client.destroy();

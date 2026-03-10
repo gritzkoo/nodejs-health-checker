@@ -184,4 +184,12 @@ export const scenarios: HealthCheckDetailedTestScenario = {
       },
     },
   },
+  unknownIntegrationType: {
+    expected: false,
+    config: {
+      type: "Unknown" as HealthTypes,
+      name: "unknown-integration-type",
+      host: "my-custom-integration-host",
+    },
+  },
 };
