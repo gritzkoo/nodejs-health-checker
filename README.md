@@ -24,6 +24,22 @@ ___
 
 [CHANGELOG](./CHANGELOG.md)
 
+- [nodejs-health-checker](#nodejs-health-checker)
+  - [Contributors](#contributors)
+  - [How to install](#how-to-install)
+  - [Available integrations](#available-integrations)
+    - [Redis](#redis)
+    - [Memcached](#memcached)
+    - [Web integration (https)](#web-integration-https)
+    - [AWS DynamoDB](#aws-dynamodb)
+    - [Databases](#databases)
+      - [Postgres example](#postgres-example)
+      - [Mysql example](#mysql-example)
+      - [MariaDB example](#mariadb-example)
+    - [Custom integration Support](#custom-integration-support)
+  - [How to use](#how-to-use)
+
+
 ___
 
 This is a Node package that allows you to track the health of your application, providing two ways of checking:
@@ -86,12 +102,303 @@ npm i nodejs-health-checker
 
 ## Available integrations
 
-- [x] Redis
-- [x] Memcached
+- [x] Redis `(optional)`
+- [x] Memcached `(optional)`
 - [x] Web integration (https)
-- [x] AWS DynamoDB
-- [x] Sequelize (authored by @MikeG96)
+- [x] AWS DynamoDB `(optional)`
+- [x] Databases `Uses Sequelize package` (authored by @MikeG96) `(optional)`
 - [x] Custom integration support (authored by @youngpayters)
+
+All `optional` packages needs extra packages install, and if you try to use without install these packages, your validation will return `ERR_MODULE_NOT_FOUND` as the example:
+
+```json
+{
+  "name": "example-missing-packages",
+  "version": "v1.0.0",
+  "status": false,
+  "date": "2026-03-10T10:07:03.930Z",
+  "duration": 1.054,
+  "integrations": [
+    {
+      "name": "test redis",
+      "kind": "Redis DB integration",
+      "status": false,
+      "response_time": 0.004,
+      "url": "redis:6379",
+      "error": {
+        "code": "ERR_MODULE_NOT_FOUND"
+      }
+    },
+    {
+      "name": "memcache",
+      "kind": "Memcached integraton",
+      "status": false,
+      "response_time": 0.002,
+      "url": "memcache",
+      "error": {
+        "code": "ERR_MODULE_NOT_FOUND"
+      }
+    },
+    {
+      "name": "dynamo",
+      "kind": "AWS Dynamo DB",
+      "status": false,
+      "response_time": 0.001,
+      "url": "http://localhost:8000",
+      "error": {
+        "code": "ERR_MODULE_NOT_FOUND"
+      }
+    }
+    {
+      "name": "postgres",
+      "kind": "Database integration",
+      "status": false,
+      "response_time": 0.001,
+      "url": "postgresql",
+      "error": {
+        "code": "ERR_MODULE_NOT_FOUND"
+      }
+    }
+  ]
+}
+```
+
+Below a list of `how to` install and validate each `optional` integration:
+
+### Redis
+
+Redis is a `peer dependency` and requires
+
+```sh
+npm i nodejs-health-checker redis
+```
+
+It allows you to use:
+
+```javascript
+import {HealthcheckerDetailedCheck, HealthTypes} from "nodejs-health-checker";
+
+HealthcheckerDetailedCheck({
+  name: "My node application",
+  version: "my version",
+  integrations: [
+     {
+       type: HealthTypes.Redis,
+       name: "redis integration",
+       host: "redis",
+       port: 6379
+     }
+  ],
+}).then(result => console.debug(result)).catch(e => console.error(e));
+```
+
+>More options in  [interface IntegrationConfig](./src/interfaces/types.ts#L40)
+
+### Memcached
+
+Memcached is a `peer dependency` and requires
+
+```sh
+npm i nodejs-health-checker memcache
+```
+
+It allows you to use:
+
+```javascript
+import {HealthcheckerDetailedCheck, HealthTypes} from "nodejs-health-checker";
+
+HealthcheckerDetailedCheck({
+  name: "My node application",
+  version: "my version"
+  integrations: [
+    {
+      type: HealthTypes.Memcached,
+      name: "My memcache integration",
+      host: "memcache",
+      port: 11211
+    }
+  ]
+}).then(result => console.debug(result)).catch(e => console.error(e));
+```
+
+### Web integration (https)
+
+Uses native `fetch` library no extra installs needed
+
+```javascript
+import {HealthcheckerDetailedCheck, HealthTypes} from "nodejs-health-checker";
+
+HealthcheckerDetailedCheck({
+  name: "My node application",
+  version: "my version"
+  integrations: [
+    {
+      type: HealthTypes.Web,
+      name: "my web api integration",
+      host: "https://my-api-example.com/my-status-endpoint"
+    }
+  ]
+}).then(result => console.debug(result)).catch(e => console.error(e));
+```
+
+### AWS DynamoDB
+
+AWS DynamoDB is a `peer dependency` and requires
+
+```sh
+npm i nodejs-health-checker @aws-sdk/client-dynamodb
+```
+
+It allows you to use:
+
+```javascript
+import {HealthcheckerDetailedCheck, HealthTypes} from "nodejs-health-checker";
+
+HealthcheckerDetailedCheck({
+  name: "My node application",
+  version: "my version"
+  integrations: [
+    {
+      type: HealthTypes.Dynamo,
+      name: "my dynamo",
+      host: "http://localhost",
+      port: 8000,
+      Aws: {
+        region: "us-east-1",
+        access_key_id: "",
+        secret_access_key: "",
+      },
+    }
+  ]
+}).then(result => console.debug(result)).catch(e => console.error(e));
+```
+
+### Databases
+
+Uses [Sequelize v6](https://sequelize.org/docs/v6/getting-started/) as a `peer dependency` and requires separated install depending on target database your project uses.
+
+Sequelize is compatible with `Mariadb, Mysql, Postgres` Dialects wich you needs to install
+
+#### Postgres example
+
+```sh
+npm i nodejs-health-checker sequelize pg pg-hstore
+```
+
+Then:
+
+```javascript
+import {HealthcheckerDetailedCheck, HealthTypes, Dialects} from "nodejs-health-checker";
+
+HealthcheckerDetailedCheck({
+  name: "My node application",
+  version: "my version"
+  integrations: [
+    {
+      type: HealthTypes.Database,
+      name: "my database",
+      host: "localhost",
+      dbPort: 5432,
+      dbName: "postgres",
+      dbUser: "postgres",
+      dbPwd: "root",
+      dbDialect: Dialects.postgres,
+    }
+  ]
+}).then(result => console.debug(result)).catch(e => console.error(e));
+```
+
+#### Mysql example
+
+```sh
+npm i nodejs-health-checker sequelize mysql2
+```
+
+Then:
+
+```javascript
+import {HealthcheckerDetailedCheck, HealthTypes, Dialects} from "nodejs-health-checker"
+
+HealthcheckerDetailedCheck({
+  name: "My node application",
+  version: "my version"
+  integrations: [
+    {
+      type: HealthTypes.Database,
+      name: "my database",
+      host: "localhost",
+      dbPort: 3306,
+      dbName: "mysql",
+      dbUser: "root",
+      dbPwd: "root",
+      dbDialect: Dialects.mysql,
+    }
+  ]
+}).then(result => console.debug(result)).catch(e => console.error(e));
+```
+
+#### MariaDB example
+
+```sh
+npm i nodejs-health-checker sequelize mariadb
+```
+
+Then:
+
+```javascript
+import {HealthcheckerDetailedCheck, HealthTypes, Dialects} from "nodejs-health-checker"
+
+HealthcheckerDetailedCheck({
+  name: "My node application",
+  version: "my version"
+  integrations: [
+    {
+      type: HealthTypes.Database,
+      name: "my database",
+      host: "localhost",
+      dbPort: 3306,
+      dbName: "mariadb",
+      dbUser: "root",
+      dbPwd: "root",
+      dbDialect: Dialects.mariadb,
+    }
+  ]
+}).then(result => console.debug(result)).catch(e => console.error(e));
+```
+
+### Custom integration Support
+
+If you have any kind of external dependency that you want to check in your health check but that is not supported yet, you can use the custom integration support to create your own checker function and inform it in the configuration as below:
+
+```javascript
+import {HealthcheckerDetailedCheck, HealthTypes, HTTPChecker} from "nodejs-health-checker"
+
+// create your own validation
+async function myValidation(): Promise<HTTPChecker> {
+  return new Promise((resolve, reject) => {
+    try {
+      // do fancy validations
+      setTimeout(() => {
+        resolve({ status: true})
+      })
+    } catch (e) {
+      reject({status: false, error: e})
+    }
+  })
+}
+
+HealthcheckerDetailedCheck({
+  name: "My node application",
+  version: "my version"
+  integrations: [
+    {
+      type: HealthTypes.Custom,
+      name: "my custom integration",
+      customCheckerFunction: myValidation,
+    }
+  ]
+}).then(result => console.debug(result)).catch(e => console.error(e));
+```
 
 ## How to use
 
@@ -117,14 +424,8 @@ server.get("/health-check/readiness", async (_, res) => {
     await HealthcheckerDetailedCheck({
       name: "My node application",
       version: "my version",
-      // here you will inform all of your external dependencies
-      // that your application must be checked to keep healthy
-      // available integration types: [
-      //   HealthTypes.Redis,
-      //   HealthTypes.Memcached,
-      //   HealthTypes.Web
-      //   HealthTypes.Custom
-      // ]
+      // here you will list all your external dependencies
+      // that your application needs to checke to keep healthy
       integrations: [
         {
           type: HealthTypes.Redis,
@@ -174,7 +475,12 @@ server.get("/health-check/readiness", async (_, res) => {
   );
 });
 
-export default server;
+const port = process.env.PORT || 8000;
+
+server.listen(port, () => {
+  console.log(`[SERVER] Running at http://localhost:${port}`);
+});
+
 ```
 
 And then, you could call these endpoints manually to see your application health, but, if you are using modern Kubernetes deployment, you can config your chart to check your application with the setup below.
@@ -203,6 +509,8 @@ spec:
         env:
         - name: NODE_ENV
           value: "production"
+        - name: PORT
+          value: 3000
         livenessProbe:
           httpGet:
             path: /health-check/liveness
