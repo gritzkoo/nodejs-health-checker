@@ -29,9 +29,11 @@
 ### Migration Guide
 
 #### 📦 Simplified Imports
+
 The package now provides a single entry point. You no longer need to navigate through internal folders.
 
 **Before (v1.x)**:
+
 ```javascript
 // CJS or Deep Imports
 const { HealthcheckerSimpleCheck } = require("nodejs-health-checker/dist/healthchecker/healthchecker.js");
@@ -91,28 +93,26 @@ If an integration check returns `ERR_MODULE_NOT_FOUND`, it indicates a missing p
 
 **Bundle Size Improvements:**
 
-* **Before**: ~70MB (all potential dependencies bundled)
-* **After**: **~400KB** (base package + only your chosen drivers)
+- **Before**: ~70MB (all potential dependencies bundled)
+- **After**: **~400KB** (base package + only your chosen drivers)
 
 ---
 
 ### What's Fixed
 
-* 🔧 Resolved memory leaks and open handles in the test suite.
-* 🔧 Improved connection cleanup across all integrations.
-* 🔧 Optimized timeout handling for web requests.
-* 🔧 Enhanced error messaging for Redis ping failures.
-* 🔧 Modernized Memcached integration for better ESM compatibility.
+- 🔧 Resolved memory leaks and open handles in the test suite.
+- 🔧 Improved connection cleanup across all integrations.
+- 🔧 Optimized timeout handling for web requests.
+- 🔧 Enhanced error messaging for Redis ping failures.
+- 🔧 Modernized Memcached integration for better ESM compatibility.
 
 ### Internal Changes
 
-* 📦 Migrated to **ESLint v9** (flat config).
-* 📦 Updated **TypeScript to v5.7.3**.
-* 📦 Replaced legacy TSLint/Prettier with ESLint-native formatting.
-* 📦 Improved type safety using discriminated union types.
-* 📦 Removed `node-fetch` in favor of native fetch.
-* 📦 Added `engines` field to `package.json` (Node.js >=18.0.0).
+- 📦 Migrated to **ESLint v9** (flat config).
+- 📦 Updated **TypeScript to v5.7.3**.
+- 📦 Replaced legacy TSLint/Prettier with ESLint-native formatting.
+- 📦 Improved type safety using discriminated union types.
+- 📦 Removed `node-fetch` in favor of native fetch.
+- 📦 Added `engines` field to `package.json` (Node.js >=18.0.0).
 
 ✅ **LOGIC PRESERVED**: Your existing health check configurations remain compatible. Simply update your import statements to the new unified path! 🚀
-
-```
