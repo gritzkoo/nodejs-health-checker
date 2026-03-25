@@ -1,0 +1,14 @@
+{
+  "CHANGELOG_ITEM": {
+    "scope": "plaintext, markdown",
+    "description": "Include new item in a CHANGELOG file",
+    "prefix": "pkg:changelog",
+    "body": [
+      "## [${1:1.0.0}] - $CURRENT_YEAR-$CURRENT_MONTH-$CURRENT_DATE",
+      "",
+      "$2",
+      "___",
+      "",
+    ]
+  }
+}
