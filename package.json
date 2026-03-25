@@ -1,6 +1,6 @@
 {
   "name": "nodejs-health-checker",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "type": "module",
   "description": "Simple Nodejs package to simplify applications based in Node, to trace the healthy of the pods",
   "main": "./dist/index.js",
