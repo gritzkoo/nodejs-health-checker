@@ -1,6 +1,6 @@
 # nodejs-health-checker Change Log
 
-## [2.0.4] - 2026-03-25
+## [2.0.4] - 2026-06-16
 
 **Special thanks to [@rmartins0](https://github.com/rmartins0) for opening [issue #106](https://github.com/gritzkoo/nodejs-health-checker/issues/106) and driving these peer dependency updates!**
 
@@ -13,7 +13,7 @@
 
 ___
 
-## [2.0.2] - 2026-03-25
+## [2.0.3] - 2026-05-12
 
 ***Github Dependabot updates***
 
