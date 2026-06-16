@@ -1,5 +1,24 @@
 # nodejs-health-checker Change Log
 
+## [2.0.4] - 2026-06-16
+
+**Special thanks to [@rmartins0](https://github.com/rmartins0) for opening [issue #106](https://github.com/gritzkoo/nodejs-health-checker/issues/106) and driving these peer dependency updates!**
+
+***Peer Dependencies Updates***
+
+- Updated `redis` peer dependency from `^5.11.0` to `^6.0.0`
+- Updated `sequelize` peer dependency from `^6.37.7` to `^6.37.8`
+- Maintained compatibility with existing integration APIs
+- No breaking changes for existing implementations
+
+___
+
+## [2.0.3] - 2026-05-12
+
+***Github Dependabot updates***
+
+___
+
 ## [2.0.2] - 2026-03-25
 
 ***Github Dependabot updates***
