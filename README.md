@@ -92,6 +92,8 @@ npm i nodejs-health-checker
 
 ```
 
+This package requires Node.js `>=18.0.0`.
+
 ## Available integrations
 
 - [x] Redis `(optional)`
